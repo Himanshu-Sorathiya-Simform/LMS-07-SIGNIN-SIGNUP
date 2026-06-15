@@ -9,25 +9,29 @@ import { Calendar as CalendarIcon } from "lucide-react";
 interface DateFieldProps {
 	id: string;
 	label: string;
-	placeholder?: string;
-	description?: string;
-	disabled?: boolean;
-	invalid?: boolean;
-	required?: boolean;
+	placeholder?: string | undefined;
+	description?: string | undefined;
+	disabled?: boolean | undefined;
+	invalid?: boolean | undefined;
+	required?: boolean | undefined;
 	date?: Date | undefined;
 	onDateChange?: (value: Date | undefined) => void;
+	name?: string;
+	onBlur?: () => void;
 }
 
 export function DateField({
 	id,
 	label,
 	placeholder = "Pick a date",
-	description = "",
+	description,
 	disabled = false,
 	invalid = false,
 	required = false,
-	date = new Date(),
+	date,
 	onDateChange = () => {},
+	name,
+	onBlur,
 }: DateFieldProps) {
 	return (
 		<Field
@@ -43,6 +47,8 @@ export function DateField({
 				<PopoverTrigger asChild>
 					<Button
 						id={id}
+						name={name}
+						onBlur={onBlur}
 						disabled={disabled}
 						aria-invalid={invalid}
 						variant={"outline"}

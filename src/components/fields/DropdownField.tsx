@@ -17,12 +17,14 @@ interface DropdownFieldProps {
 	label: string;
 	placeholder: string;
 	items: DropdownItem[];
-	description?: string;
-	disabled?: boolean;
-	invalid?: boolean;
-	required?: boolean;
-	value?: string;
+	description?: string | undefined;
+	disabled?: boolean | undefined;
+	invalid?: boolean | undefined;
+	required?: boolean | undefined;
+	value?: string | undefined;
 	onValueChange?: (value: string) => void;
+	onBlur?: () => void;
+	name?: string;
 }
 
 export function DropdownField({
@@ -30,12 +32,14 @@ export function DropdownField({
 	label,
 	placeholder,
 	items,
-	description = "",
+	description,
 	disabled = false,
 	invalid = false,
-	required = true,
-	value = "",
+	required = false,
+	value,
 	onValueChange = () => {},
+	onBlur,
+	name,
 }: DropdownFieldProps) {
 	return (
 		<Field
@@ -48,13 +52,14 @@ export function DropdownField({
 			</FieldLabel>
 
 			<Select
-				value={value}
+				value={value ?? ""}
 				onValueChange={onValueChange}
 				disabled={disabled}
-				required={required}
+				name={name ?? ""}
 			>
 				<SelectTrigger
 					id={id}
+					onBlur={onBlur}
 					aria-invalid={invalid}
 					className="w-full"
 				>

@@ -2,15 +2,46 @@ import { InputField } from "@/components/fields/InputField.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
 import FormActions from "@/features/auth/components/FormActions";
+import {
+	type AddressDetailsSchema,
+	addressDetailsSchema,
+} from "@/schemas/SignupSchema.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { RotateCcw } from "lucide-react";
+import { type SubmitHandler, useForm } from "react-hook-form";
 
 interface AddressDetailsFormProps {
 	previousStep: () => void;
 }
 
 function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<AddressDetailsSchema>({
+		resolver: zodResolver(addressDetailsSchema),
+		defaultValues: {
+			city: "",
+			landmark: "",
+			street: "",
+			state: "",
+			zip: "",
+			country: "",
+		},
+	});
+
+	const onSubmit: SubmitHandler<AddressDetailsSchema> = (
+		data: AddressDetailsSchema,
+	) => {
+		console.log(data);
+	};
+
 	return (
-		<form className="w-full">
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className="w-full"
+		>
 			<FieldGroup>
 				<FieldGroup className="grid grid-cols-2">
 					<InputField
@@ -19,6 +50,9 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						className="focus-visible:ring-1"
 						placeholder={"Enter your street"}
 						required
+						description={errors.street?.message}
+						invalid={!!errors.street}
+						{...register("street")}
 					/>
 
 					<InputField
@@ -26,6 +60,9 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						label={"Landmark"}
 						className="focus-visible:ring-1"
 						placeholder={"Enter your landmark"}
+						description={errors.landmark?.message}
+						invalid={!!errors.landmark}
+						{...register("landmark")}
 					/>
 				</FieldGroup>
 
@@ -36,6 +73,9 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						className="focus-visible:ring-1"
 						placeholder={"Enter your city"}
 						required
+						description={errors.city?.message}
+						invalid={!!errors.city}
+						{...register("city")}
 					/>
 
 					<InputField
@@ -44,6 +84,9 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						className="focus-visible:ring-1"
 						placeholder={"Enter your state"}
 						required
+						description={errors.state?.message}
+						invalid={!!errors.state}
+						{...register("state")}
 					/>
 				</FieldGroup>
 
@@ -54,6 +97,9 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						className="focus-visible:ring-1"
 						placeholder={"Enter your zip"}
 						required
+						description={errors.zip?.message}
+						invalid={!!errors.zip}
+						{...register("zip")}
 					/>
 
 					<InputField
@@ -62,6 +108,9 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						className="focus-visible:ring-1"
 						placeholder={"Enter your country"}
 						required
+						description={errors.country?.message}
+						invalid={!!errors.country}
+						{...register("country")}
 					/>
 				</FieldGroup>
 

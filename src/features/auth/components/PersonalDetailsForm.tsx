@@ -4,7 +4,13 @@ import { InputField } from "@/components/fields/InputField.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
 import FormActions from "@/features/auth/components/FormActions";
+import {
+	type PersonalDetailsSchema,
+	personalDetailsSchema,
+} from "@/schemas/SignupSchema.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { RotateCcw } from "lucide-react";
+import { type SubmitHandler, Controller, useForm } from "react-hook-form";
 
 interface PersonalDetailsFormProps {
 	nextStep: () => void;
@@ -19,8 +25,34 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 		{ value: "prefer_not_to_say", label: "Prefer not to say" },
 	];
 
+	const {
+		control,
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<PersonalDetailsSchema>({
+		resolver: zodResolver(personalDetailsSchema),
+		defaultValues: {
+			firstName: "",
+			lastName: "",
+			dateOfBirth: new Date(),
+			gender: "male",
+		},
+	});
+
+	const onSubmit: SubmitHandler<PersonalDetailsSchema> = (
+		data: PersonalDetailsSchema,
+	) => {
+		nextStep();
+
+		console.log(data);
+	};
+
 	return (
-		<form className="w-full">
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className="w-full"
+		>
 			<FieldGroup>
 				<FieldGroup className="grid min-w-sm grid-cols-2">
 					<InputField
@@ -29,6 +61,9 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						className="focus-visible:ring-1"
 						placeholder={"Enter your first name"}
 						required
+						description={errors.firstName?.message}
+						invalid={!!errors.firstName}
+						{...register("firstName")}
 					/>
 
 					<InputField
@@ -37,23 +72,49 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						className="focus-visible:ring-1"
 						placeholder={"Enter your last name"}
 						required
+						description={errors.lastName?.message}
+						invalid={!!errors.lastName}
+						{...register("lastName")}
 					/>
 				</FieldGroup>
-
-				<DateField
-					id="input-field-date-of-birth"
-					label="Date of Birth"
-					placeholder="Select your birth date"
-					required
+				<Controller
+					control={control}
+					name="dateOfBirth"
+					render={({ field }) => (
+						<DateField
+							id="input-field-date-of-birth"
+							label="Date of Birth"
+							placeholder="Select your birth date"
+							required
+							description={errors.dateOfBirth?.message}
+							invalid={!!errors.dateOfBirth}
+							date={field.value}
+							onDateChange={field.onChange}
+							onBlur={field.onBlur}
+							name={field.name}
+						/>
+					)}
 				/>
 
-				<DropdownField
-					id="gender-select"
-					label="Gender"
-					placeholder="Select your gender"
-					items={genderOptions}
+				<Controller
+					control={control}
+					name="gender"
+					render={({ field }) => (
+						<DropdownField
+							id="gender-select"
+							label="Gender"
+							placeholder="Select your gender"
+							items={genderOptions}
+							description={errors.gender?.message}
+							invalid={!!errors.gender}
+							required
+							value={field.value}
+							onValueChange={field.onChange}
+							onBlur={field.onBlur}
+							name={field.name}
+						/>
+					)}
 				/>
-
 				<FormActions>
 					<Button
 						type="button"
@@ -71,12 +132,7 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						<RotateCcw />
 					</Button>
 
-					<Button
-						type="submit"
-						onClick={nextStep}
-					>
-						Next
-					</Button>
+					<Button type="submit">Next</Button>
 				</FormActions>
 			</FieldGroup>
 		</form>
