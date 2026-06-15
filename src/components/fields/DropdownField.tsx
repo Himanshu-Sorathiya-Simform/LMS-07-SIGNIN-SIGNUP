@@ -39,8 +39,8 @@ export function DropdownField({
 }: DropdownFieldProps) {
 	return (
 		<Field
-			data-disabled={disabled ? "" : undefined}
-			data-invalid={invalid ? "" : undefined}
+			data-disabled={disabled ? true : undefined}
+			data-invalid={invalid ? true : undefined}
 		>
 			<FieldLabel htmlFor={id}>
 				{label}

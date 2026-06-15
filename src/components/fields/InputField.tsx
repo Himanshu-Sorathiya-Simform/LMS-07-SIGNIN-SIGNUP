@@ -5,17 +5,13 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 } from "@/components/ui/input-group";
+import type { InputHTMLAttributes } from "react";
 
-interface InputFieldProps {
+interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 	id: string;
 	label: string;
-	className?: string;
-	placeholder?: string;
-	type?: string;
-	description?: string;
-	disabled?: boolean;
-	invalid?: boolean;
-	required?: boolean;
+	description?: string | undefined;
+	invalid?: boolean | undefined;
 	endAddon?: React.ReactNode;
 }
 
@@ -30,11 +26,12 @@ export function InputField({
 	invalid = false,
 	required = false,
 	endAddon = "",
+	...rhfProps
 }: InputFieldProps) {
 	return (
 		<Field
-			data-disabled={disabled ? "" : undefined}
-			data-invalid={invalid ? "" : undefined}
+			data-disabled={disabled ? true : undefined}
+			data-invalid={invalid ? true : undefined}
 		>
 			<FieldLabel htmlFor={id}>
 				{label}
@@ -50,6 +47,7 @@ export function InputField({
 						placeholder={placeholder}
 						disabled={disabled}
 						aria-invalid={invalid}
+						{...rhfProps}
 					/>
 
 					<InputGroupAddon align="inline-end">{endAddon}</InputGroupAddon>
@@ -61,6 +59,7 @@ export function InputField({
 					placeholder={placeholder}
 					disabled={disabled}
 					aria-invalid={invalid}
+					{...rhfProps}
 				/>
 			}
 
