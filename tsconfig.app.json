@@ -31,7 +31,12 @@
 		"strictNullChecks": true,
 		"strictBindCallApply": true,
 		"strictFunctionTypes": true,
-		"strictPropertyInitialization": true
+		"strictPropertyInitialization": true,
+
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
 	},
 	"include": ["src"]
 }
