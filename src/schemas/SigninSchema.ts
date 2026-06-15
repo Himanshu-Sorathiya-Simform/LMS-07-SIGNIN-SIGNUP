@@ -23,7 +23,7 @@ const signinSchema = z.object({
 		.regex(/[^A-Za-z0-9]/, {
 			message: "Password must contain at least one special character",
 		})
-		.refine((val) => !/[<>]/.test(val), {
+		.regex(/^[^<>]*$/, {
 			message: "Password contains invalid characters",
 		}),
 });
