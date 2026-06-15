@@ -4,7 +4,11 @@ import { FieldGroup } from "@/components/ui/field.tsx";
 import FormActions from "@/features/auth/components/FormActions";
 import { EyeOff, RotateCcw } from "lucide-react";
 
-function AccountDetailsForm({ nextStep }: { nextStep: () => void }) {
+interface AccountDetailsFormProps {
+	nextStep: () => void;
+}
+
+function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 	return (
 		<form className="w-full">
 			<FieldGroup>

@@ -5,7 +5,6 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 } from "@/components/ui/input-group";
-import * as React from "react";
 
 interface InputFieldProps {
 	id: string;
