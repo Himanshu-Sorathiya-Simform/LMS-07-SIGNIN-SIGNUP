@@ -19,20 +19,19 @@ function SigninForm() {
 				placeholder={"Enter your password"}
 			/>
 
-			<FormActions>
+			<FormActions className="justify-center">
 				<Button
-					type="button"
-					variant="outline"
-					className="ml-auto"
+					type="submit"
+					className="flex-1"
 				>
-					<RotateCcw />
+					Login
 				</Button>
 
 				<Button
-					type="submit"
-					className="mr-auto w-full"
+					type="button"
+					variant="outline"
 				>
-					Login
+					<RotateCcw />
 				</Button>
 			</FormActions>
 		</FieldGroup>
