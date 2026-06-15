@@ -6,35 +6,39 @@ import { RotateCcw } from "lucide-react";
 
 function SigninForm() {
 	return (
-		<FieldGroup>
-			<InputField
-				id={"input-field-email"}
-				label={"Email"}
-				placeholder={"Enter your email"}
-			/>
+		<form className="w-full">
+			<FieldGroup>
+				<InputField
+					id={"input-field-email"}
+					label={"Email"}
+					className="focus-visible:ring-1"
+					placeholder={"Enter your email"}
+				/>
 
-			<InputField
-				id={"input-field-password"}
-				label={"Password"}
-				placeholder={"Enter your password"}
-			/>
+				<InputField
+					id={"input-field-password"}
+					label={"Password"}
+					className="focus-visible:ring-1"
+					placeholder={"Enter your password"}
+				/>
 
-			<FormActions className="justify-center">
-				<Button
-					type="submit"
-					className="flex-1"
-				>
-					Login
-				</Button>
+				<FormActions className="justify-center">
+					<Button
+						type="submit"
+						className="flex-1"
+					>
+						Login
+					</Button>
 
-				<Button
-					type="button"
-					variant="outline"
-				>
-					<RotateCcw />
-				</Button>
-			</FormActions>
-		</FieldGroup>
+					<Button
+						type="button"
+						variant="outline"
+					>
+						<RotateCcw />
+					</Button>
+				</FormActions>
+			</FieldGroup>
+		</form>
 	);
 }
 

@@ -10,6 +10,7 @@ import * as React from "react";
 interface InputFieldProps {
 	id: string;
 	label: string;
+	className?: string;
 	placeholder?: string;
 	type?: string;
 	description?: string;
@@ -22,13 +23,14 @@ interface InputFieldProps {
 export function InputField({
 	id,
 	label,
+	className = "",
 	type = "text",
 	placeholder = "",
 	description = "",
 	disabled = false,
 	invalid = false,
 	required = false,
-	endAddon,
+	endAddon = "",
 }: InputFieldProps) {
 	return (
 		<Field
@@ -45,6 +47,7 @@ export function InputField({
 					<InputGroupInput
 						id={id}
 						type={type}
+						className={className}
 						placeholder={placeholder}
 						disabled={disabled}
 						aria-invalid={invalid}
@@ -55,6 +58,7 @@ export function InputField({
 			:	<Input
 					id={id}
 					type={type}
+					className={className}
 					placeholder={placeholder}
 					disabled={disabled}
 					aria-invalid={invalid}
