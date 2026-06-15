@@ -1,9 +1,9 @@
-import SigninLayout from "./layouts/SigninLayout.tsx";
+import SignupLayout from "./layouts/SignupLayout.tsx";
 
 function App() {
 	return (
 		<div className="flex h-screen items-center justify-center">
-			<SigninLayout />
+			<SignupLayout />
 		</div>
 	);
 }
