@@ -28,6 +28,7 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 	const {
 		control,
 		register,
+		reset,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<PersonalDetailsSchema>({
@@ -117,6 +118,7 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						/>
 					)}
 				/>
+
 				<FormActions>
 					<Button
 						type="button"
@@ -130,6 +132,7 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						type="button"
 						variant="outline"
 						className="ml-auto"
+						onClick={() => reset()}
 					>
 						<RotateCcw />
 					</Button>

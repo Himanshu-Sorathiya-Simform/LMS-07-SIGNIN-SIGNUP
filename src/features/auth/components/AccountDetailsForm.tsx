@@ -16,8 +16,9 @@ interface AccountDetailsFormProps {
 
 function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 	const {
-		register,
 		handleSubmit,
+		register,
+		reset,
 		formState: { errors },
 	} = useForm<AccountDetailsSchema>({
 		resolver: zodResolver(accountDetailsSchema),
@@ -91,6 +92,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 					<Button
 						type="button"
 						variant="outline"
+						onClick={() => reset()}
 					>
 						<RotateCcw />
 					</Button>

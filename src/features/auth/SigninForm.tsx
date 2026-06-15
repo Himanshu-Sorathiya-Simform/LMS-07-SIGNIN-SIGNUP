@@ -11,6 +11,7 @@ function SigninForm() {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm<SigninSchema>({
 		resolver: zodResolver(signinSchema),
@@ -65,6 +66,7 @@ function SigninForm() {
 					<Button
 						type="button"
 						variant="outline"
+						onClick={() => reset()}
 					>
 						<RotateCcw />
 					</Button>

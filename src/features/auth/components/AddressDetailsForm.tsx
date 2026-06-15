@@ -16,8 +16,9 @@ interface AddressDetailsFormProps {
 
 function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 	const {
-		register,
 		handleSubmit,
+		register,
+		reset,
 		formState: { errors },
 	} = useForm<AddressDetailsSchema>({
 		resolver: zodResolver(addressDetailsSchema),
@@ -127,6 +128,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						type="button"
 						variant="outline"
 						className="ml-auto"
+						onClick={() => reset()}
 					>
 						<RotateCcw />
 					</Button>
