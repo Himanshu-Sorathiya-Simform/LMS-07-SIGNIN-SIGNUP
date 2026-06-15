@@ -34,7 +34,7 @@ function SigninForm() {
 					id={"input-field-email"}
 					label={"Email"}
 					type={"email"}
-					className={"focus-visible:ring-1"}
+					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your email"}
 					required
 					description={errors.email?.message}
@@ -46,7 +46,7 @@ function SigninForm() {
 					id={"input-field-password"}
 					label={"Password"}
 					type={"password"}
-					className={"focus-visible:ring-1"}
+					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your password"}
 					required
 					description={errors.password?.message}

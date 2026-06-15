@@ -58,7 +58,7 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 					<InputField
 						id={"input-field-first-name"}
 						label={"First Name"}
-						className="focus-visible:ring-1"
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
 						placeholder={"Enter your first name"}
 						required
 						description={errors.firstName?.message}
@@ -69,7 +69,7 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 					<InputField
 						id={"input-field-last-name"}
 						label={"Last Name"}
-						className="focus-visible:ring-1"
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
 						placeholder={"Enter your last name"}
 						required
 						description={errors.lastName?.message}
@@ -77,6 +77,7 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						{...register("lastName")}
 					/>
 				</FieldGroup>
+
 				<Controller
 					control={control}
 					name="dateOfBirth"
@@ -84,6 +85,7 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						<DateField
 							id="input-field-date-of-birth"
 							label="Date of Birth"
+							className={"focus-visible:ring-1 aria-invalid:ring-1"}
 							placeholder="Select your birth date"
 							required
 							description={errors.dateOfBirth?.message}

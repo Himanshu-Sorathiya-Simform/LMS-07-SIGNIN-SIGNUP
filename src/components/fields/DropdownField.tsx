@@ -15,6 +15,7 @@ interface DropdownItem {
 interface DropdownFieldProps {
 	id: string;
 	label: string;
+	className?: string;
 	placeholder: string;
 	items: DropdownItem[];
 	description?: string | undefined;
@@ -30,6 +31,7 @@ interface DropdownFieldProps {
 export function DropdownField({
 	id,
 	label,
+	className = "",
 	placeholder,
 	items,
 	description,
@@ -61,7 +63,7 @@ export function DropdownField({
 					id={id}
 					onBlur={onBlur}
 					aria-invalid={invalid}
-					className="w-full"
+					className={`w-full ${className}`}
 				>
 					<SelectValue placeholder={placeholder} />
 				</SelectTrigger>

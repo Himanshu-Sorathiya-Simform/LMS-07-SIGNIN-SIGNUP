@@ -47,7 +47,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 					<InputField
 						id={"input-field-street"}
 						label={"Street"}
-						className="focus-visible:ring-1"
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
 						placeholder={"Enter your street"}
 						required
 						description={errors.street?.message}
@@ -58,7 +58,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 					<InputField
 						id={"input-field-landmark"}
 						label={"Landmark"}
-						className="focus-visible:ring-1"
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
 						placeholder={"Enter your landmark"}
 						description={errors.landmark?.message}
 						invalid={!!errors.landmark}
@@ -70,7 +70,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 					<InputField
 						id={"input-field-city"}
 						label={"City"}
-						className="focus-visible:ring-1"
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
 						placeholder={"Enter your city"}
 						required
 						description={errors.city?.message}
@@ -81,7 +81,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 					<InputField
 						id={"input-field-state"}
 						label={"State"}
-						className="focus-visible:ring-1"
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
 						placeholder={"Enter your state"}
 						required
 						description={errors.state?.message}
@@ -94,7 +94,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 					<InputField
 						id={"input-field-zip"}
 						label={"Zip"}
-						className="focus-visible:ring-1"
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
 						placeholder={"Enter your zip"}
 						required
 						description={errors.zip?.message}
@@ -105,7 +105,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 					<InputField
 						id={"input-field-country"}
 						label={"Country"}
-						className="focus-visible:ring-1"
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
 						placeholder={"Enter your country"}
 						required
 						description={errors.country?.message}

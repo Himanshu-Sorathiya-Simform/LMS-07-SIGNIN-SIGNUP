@@ -46,7 +46,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 				<InputField
 					id={"input-field-email"}
 					label={"Email"}
-					className="focus-visible:ring-1"
+					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your email"}
 					required
 					description={errors.email?.message}
@@ -57,7 +57,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 				<InputField
 					id={"input-field-password"}
 					label={"Password"}
-					className="focus-visible:ring-1"
+					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your password"}
 					endAddon={<EyeOff />}
 					required
@@ -69,7 +69,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 				<InputField
 					id={"input-field-confirm-password"}
 					label={"Confirm Password"}
-					className="focus-visible:ring-1"
+					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Confirm your password"}
 					required
 					description={errors.confirmPassword?.message}
@@ -80,18 +80,17 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 				<InputField
 					id={"input-field-phone-number"}
 					label={"Phone Number"}
-					className="focus-visible:ring-1"
+					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your phone number"}
 					description={errors.phoneNumber?.message}
 					invalid={!!errors.phoneNumber}
 					{...register("phoneNumber")}
 				/>
 
-				<FormActions>
+				<FormActions className={"justify-end"}>
 					<Button
 						type="button"
 						variant="outline"
-						className="ml-auto"
 					>
 						<RotateCcw />
 					</Button>

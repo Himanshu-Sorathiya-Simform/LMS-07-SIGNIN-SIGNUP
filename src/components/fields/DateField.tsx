@@ -9,6 +9,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 interface DateFieldProps {
 	id: string;
 	label: string;
+	className?: string;
 	placeholder?: string | undefined;
 	description?: string | undefined;
 	disabled?: boolean | undefined;
@@ -23,6 +24,7 @@ interface DateFieldProps {
 export function DateField({
 	id,
 	label,
+	className = "",
 	placeholder = "Pick a date",
 	description,
 	disabled = false,
@@ -54,6 +56,7 @@ export function DateField({
 						variant={"outline"}
 						className={cn(
 							"w-full justify-start text-left font-normal",
+							className,
 							!date && "text-muted-foreground",
 							invalid
 								&& "border-destructive focus-visible:ring-destructive",
