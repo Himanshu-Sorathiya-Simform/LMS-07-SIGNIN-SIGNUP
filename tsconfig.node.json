@@ -32,7 +32,6 @@
 		"strictFunctionTypes": true,
 		"strictPropertyInitialization": true,
 
-		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
 		}
