@@ -17,6 +17,7 @@ function PersonalDetailsForm({
 		{ value: "male", label: "Male" },
 		{ value: "female", label: "Female" },
 		{ value: "other", label: "Other" },
+		{ value: "prefer-not", label: "Prefer not to say" },
 	];
 
 	return (
@@ -25,6 +26,7 @@ function PersonalDetailsForm({
 				<InputField
 					id={"input-field-first-name"}
 					label={"First Name"}
+					className="focus-visible:ring-1"
 					placeholder={"Enter your first name"}
 					required
 				/>
@@ -32,6 +34,7 @@ function PersonalDetailsForm({
 				<InputField
 					id={"input-field-last-name"}
 					label={"Last Name"}
+					className="focus-visible:ring-1"
 					placeholder={"Enter your last name"}
 					required
 				/>

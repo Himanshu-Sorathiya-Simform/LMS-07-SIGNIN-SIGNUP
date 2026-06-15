@@ -5,7 +5,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-import * as React from "react";
 
 interface DateFieldProps {
 	id: string;
@@ -15,6 +14,8 @@ interface DateFieldProps {
 	disabled?: boolean;
 	invalid?: boolean;
 	required?: boolean;
+	date?: Date | undefined;
+	onDateChange?: (value: Date | undefined) => void;
 }
 
 export function DateField({
@@ -25,9 +26,9 @@ export function DateField({
 	disabled = false,
 	invalid = false,
 	required = false,
+	date = new Date(),
+	onDateChange = () => {},
 }: DateFieldProps) {
-	const [date, setDate] = React.useState<Date>();
-
 	return (
 		<Field
 			data-disabled={disabled ? "" : undefined}
@@ -65,7 +66,7 @@ export function DateField({
 					<Calendar
 						mode="single"
 						selected={date}
-						onSelect={(day) => setDate(day as Date | undefined)}
+						onSelect={(day) => onDateChange(day)}
 					/>
 				</PopoverContent>
 			</Popover>

@@ -33,9 +33,9 @@ export function DropdownField({
 	description = "",
 	disabled = false,
 	invalid = false,
-	required = false,
-	value,
-	onValueChange,
+	required = true,
+	value = "",
+	onValueChange = () => {},
 }: DropdownFieldProps) {
 	return (
 		<Field
@@ -44,7 +44,7 @@ export function DropdownField({
 		>
 			<FieldLabel htmlFor={id}>
 				{label}
-				{required && <span className="text-destructive ml-1">*</span>}
+				{required && <span className="text-destructive">*</span>}
 			</FieldLabel>
 
 			<Select
@@ -60,6 +60,7 @@ export function DropdownField({
 				>
 					<SelectValue placeholder={placeholder} />
 				</SelectTrigger>
+
 				<SelectContent>
 					{items.map((item) => (
 						<SelectItem

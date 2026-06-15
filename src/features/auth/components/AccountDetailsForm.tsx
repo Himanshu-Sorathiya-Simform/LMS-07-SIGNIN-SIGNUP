@@ -11,6 +11,7 @@ function AccountDetailsForm({ nextStep }: { nextStep: () => void }) {
 				<InputField
 					id={"input-field-email"}
 					label={"Email"}
+					className="focus-visible:ring-1"
 					placeholder={"Enter your email"}
 					required
 				/>
@@ -18,6 +19,7 @@ function AccountDetailsForm({ nextStep }: { nextStep: () => void }) {
 				<InputField
 					id={"input-field-password"}
 					label={"Password"}
+					className="focus-visible:ring-1"
 					placeholder={"Enter your password"}
 					endAddon={<EyeOff />}
 					required
@@ -26,6 +28,7 @@ function AccountDetailsForm({ nextStep }: { nextStep: () => void }) {
 				<InputField
 					id={"input-field-confirm-password"}
 					label={"Confirm Password"}
+					className="focus-visible:ring-1"
 					placeholder={"Confirm your password"}
 					required
 				/>
@@ -33,6 +36,7 @@ function AccountDetailsForm({ nextStep }: { nextStep: () => void }) {
 				<InputField
 					id={"input-field-phone-number"}
 					label={"Phone Number"}
+					className="focus-visible:ring-1"
 					placeholder={"Enter your phone number"}
 				/>
 
