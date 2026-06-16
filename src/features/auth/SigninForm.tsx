@@ -1,6 +1,7 @@
 import { InputField } from "@/components/fields/InputField.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
 import FormActions from "@/features/auth/components/FormActions";
 import { type SigninSchema, signinSchema } from "@/schemas/SigninSchema.ts";
 import { getInitialSigninDetails, getUsers } from "@/utils/sessionStorageUtils.ts";
@@ -74,63 +75,71 @@ function SigninForm({ onLoginSuccess }: SigninFormProps) {
 	};
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="w-full"
-		>
-			<FieldGroup>
-				<InputField
-					id={"input-field-email"}
-					label={"Email"}
-					type={"email"}
-					className={"focus-visible:ring-1 aria-invalid:ring-1"}
-					placeholder={"Enter your email"}
-					required
-					description={errors.email?.message}
-					invalid={!!errors.email}
-					{...register("email")}
-				/>
+		<div className="flex flex-col gap-5">
+			<h2 className="text-2xl font-bold">Signin</h2>
 
-				<InputField
-					id={"input-field-password"}
-					label={"Password"}
-					type={"password"}
-					className={"focus-visible:ring-1 aria-invalid:ring-1"}
-					placeholder={"Enter your password"}
-					required
-					description={errors.password?.message}
-					invalid={!!errors.password}
-					{...register("password")}
-				/>
+			<Separator />
 
-				<FormActions className="justify-center">
-					<Button
-						type="submit"
-						className="flex-1"
-					>
-						Login
-					</Button>
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				className="w-full"
+			>
+				<FieldGroup>
+					<InputField
+						id={"input-field-email"}
+						label={"Email"}
+						type={"email"}
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
+						placeholder={"Enter your email"}
+						required
+						description={errors.email?.message}
+						invalid={!!errors.email}
+						{...register("email")}
+					/>
 
-					<Button
-						type="button"
-						variant="outline"
-						onClick={handleReset}
-					>
-						<Trash2 />
-					</Button>
-				</FormActions>
+					<InputField
+						id={"input-field-password"}
+						label={"Password"}
+						type={"password"}
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
+						placeholder={"Enter your password"}
+						required
+						description={errors.password?.message}
+						invalid={!!errors.password}
+						{...register("password")}
+					/>
 
-				<p className="text-muted-foreground mt-4 text-center text-sm">
-					New member?{" "}
-					<Link
-						to="/signup"
-						className="text-primary font-medium underline-offset-4 transition-colors hover:underline"
-					>
-						Sign up here
-					</Link>
-				</p>
-			</FieldGroup>
-		</form>
+					<FormActions className="justify-center">
+						<Button
+							type="submit"
+							className="flex-1"
+						>
+							Login
+						</Button>
+
+						<Button
+							type="button"
+							variant="outline"
+							onClick={handleReset}
+						>
+							<Trash2 />
+						</Button>
+					</FormActions>
+				</FieldGroup>
+			</form>
+
+			<Separator />
+
+			<p className="text-muted-foreground text-center text-sm">
+				New member?{" "}
+				<Link
+					to="/signup"
+					className="text-primary font-medium underline-offset-4 transition-colors hover:underline"
+				>
+					Sign up here
+				</Link>
+			</p>
+		</div>
 	);
 }
 
