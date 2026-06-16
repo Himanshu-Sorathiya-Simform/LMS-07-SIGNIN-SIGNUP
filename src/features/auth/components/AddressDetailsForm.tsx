@@ -63,11 +63,14 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 		};
 
 		setUsers(completeSignupData);
-		navigate("/signin");
+
+		sessionStorage.removeItem("signin_details");
 		sessionStorage.removeItem("signup_current_step");
 		sessionStorage.removeItem("signup_account_details");
 		sessionStorage.removeItem("signup_personal_details");
 		sessionStorage.removeItem("signup_address_details");
+
+		navigate("/signin");
 	};
 
 	const handleReset = () => {

@@ -1,23 +1,31 @@
 import { useState } from "react";
 
+interface User {
+	email: string;
+}
+
 function useAuth() {
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(function () {
-		return localStorage.getItem("is_logged_in") === "true";
+	const [user, setUser] = useState<User | null>(function () {
+		const savedEmail = localStorage.getItem("user_email");
+
+		return savedEmail ? { email: savedEmail } : null;
 	});
 
-	function login() {
-		localStorage.setItem("is_logged_in", "true");
+	const isAuthenticated = !!user;
 
-		setIsAuthenticated(true);
+	function login(email: string) {
+		localStorage.setItem("user_email", email);
+
+		setUser({ email });
 	}
 
 	function logout() {
-		localStorage.removeItem("is_logged_in");
+		localStorage.removeItem("user_email");
 
-		setIsAuthenticated(false);
+		setUser(null);
 	}
 
-	return { isAuthenticated, login, logout };
+	return { isAuthenticated, user, login, logout };
 }
 
 export { useAuth };

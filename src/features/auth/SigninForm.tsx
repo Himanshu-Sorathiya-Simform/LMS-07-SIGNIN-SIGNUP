@@ -12,7 +12,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 
 interface SigninFormProps {
-	onLoginSuccess: () => void;
+	onLoginSuccess: (email: string) => void;
 }
 
 function SigninForm({ onLoginSuccess }: SigninFormProps) {
@@ -60,8 +60,14 @@ function SigninForm({ onLoginSuccess }: SigninFormProps) {
 			return;
 		}
 
-		onLoginSuccess();
+		onLoginSuccess(userExist.email);
+
 		sessionStorage.removeItem("signin_details");
+		sessionStorage.removeItem("signup_current_step");
+		sessionStorage.removeItem("signup_account_details");
+		sessionStorage.removeItem("signup_personal_details");
+		sessionStorage.removeItem("signup_address_details");
+
 		navigate("/profile");
 	};
 

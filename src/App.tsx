@@ -1,5 +1,6 @@
 import SignupForm from "@/features/auth/SignupForm.tsx";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import Profile from "./features/app/Profile.tsx";
 import SigninForm from "./features/auth/SigninForm.tsx";
 import { useAuth } from "./hooks/useAuth.ts";
 import AuthLayout from "./layouts/AuthLayout.tsx";
@@ -36,12 +37,7 @@ function App() {
 					children: [
 						{
 							path: "/profile",
-							element: (
-								<div className="space-y-4 text-center">
-									<p>profile</p>
-									<button onClick={logout}>Logout</button>
-								</div>
-							),
+							element: <Profile onLogout={logout} />,
 						},
 					],
 				},
