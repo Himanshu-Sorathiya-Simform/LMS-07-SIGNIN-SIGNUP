@@ -58,7 +58,7 @@ const accountDetailsSchema = z
 	})
 	.refine((data) => data.confirmPassword === data.password, {
 		message: "Both password do not match",
-		path: ['confirmPassword']
+		path: ["confirmPassword"],
 	});
 
 const personalDetailsSchema = z.object({
@@ -149,5 +149,5 @@ export {
 	type PersonalDetailsSchema,
 	accountDetailsSchema,
 	addressDetailsSchema,
-	personalDetailsSchema
+	personalDetailsSchema,
 };

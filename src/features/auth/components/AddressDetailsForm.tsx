@@ -6,6 +6,7 @@ import {
 	type AddressDetailsSchema,
 	addressDetailsSchema,
 } from "@/schemas/SignupSchema.ts";
+import type { User } from "@/types/user.types.ts";
 import { getInitialAddressDetails } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2 } from "lucide-react";
@@ -52,7 +53,12 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 			...data,
 		};
 
-		console.log(completeSignupData);
+		const existingUsers = JSON.parse(
+			localStorage.getItem("auth-users") ?? "[]",
+		) as User[];
+		existingUsers.push(completeSignupData);
+
+		localStorage.setItem("auth-users", JSON.stringify(existingUsers));
 
 		navigate("/signin");
 

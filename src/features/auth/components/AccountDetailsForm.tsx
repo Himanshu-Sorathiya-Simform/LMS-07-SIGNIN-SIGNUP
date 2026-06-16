@@ -32,7 +32,12 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 	const formValues = watch();
 
 	useEffect(() => {
-		sessionStorage.setItem("signup_account_details", JSON.stringify(formValues));
+		const { confirmPassword, ...accountDetails } = formValues;
+
+		sessionStorage.setItem(
+			"signup_account_details",
+			JSON.stringify(accountDetails),
+		);
 	}, [formValues]);
 
 	const onSubmit: SubmitHandler<AccountDetailsSchema> = (
