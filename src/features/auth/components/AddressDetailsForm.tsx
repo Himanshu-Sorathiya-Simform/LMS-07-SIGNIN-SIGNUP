@@ -63,9 +63,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 		};
 
 		setUsers(completeSignupData);
-
 		navigate("/signin");
-
 		sessionStorage.removeItem("signup_current_step");
 		sessionStorage.removeItem("signup_account_details");
 		sessionStorage.removeItem("signup_personal_details");

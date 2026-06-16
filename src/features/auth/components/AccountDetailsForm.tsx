@@ -6,7 +6,7 @@ import {
 	type AccountDetailsSchema,
 	accountDetailsSchema,
 } from "@/schemas/SignupSchema.ts";
-import { getInitialAccountDetails } from "@/utils/sessionStorageUtils.ts";
+import { getInitialAccountDetails, getUsers } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeOff, Trash2 } from "lucide-react";
 import { useEffect } from "react";
@@ -23,6 +23,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 		register,
 		reset,
 		watch,
+		setError,
 		formState: { errors },
 	} = useForm<AccountDetailsSchema>({
 		resolver: zodResolver(accountDetailsSchema),
@@ -32,7 +33,11 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 	const formValues = watch();
 
 	useEffect(() => {
-		const { confirmPassword, ...accountDetails } = formValues;
+		const accountDetails = {
+			email: formValues.email,
+			password: formValues.password,
+			phoneNumber: formValues.phoneNumber,
+		};
 
 		sessionStorage.setItem(
 			"signup_account_details",
@@ -43,6 +48,20 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 	const onSubmit: SubmitHandler<AccountDetailsSchema> = (
 		data: AccountDetailsSchema,
 	) => {
+		const { email } = data;
+
+		const users = getUsers();
+
+		const userExist = users.find((user) => user.email === email);
+		if (userExist) {
+			setError("email", {
+				type: "manual",
+				message: "Email is already in use",
+			});
+
+			return;
+		}
+
 		sessionStorage.setItem("signup_account_details", JSON.stringify(data));
 
 		nextStep();
@@ -79,6 +98,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 				<InputField
 					id={"input-field-password"}
 					label={"Password"}
+					type={"password"}
 					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your password"}
 					endAddon={<EyeOff />}
