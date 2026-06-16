@@ -3,7 +3,6 @@ import { DropdownField } from "@/components/fields/DropdownField.tsx";
 import { InputField } from "@/components/fields/InputField.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
-import { Separator } from "@/components/ui/separator.tsx";
 import FormActions from "@/features/auth/components/FormActions";
 import {
 	type PersonalDetailsSchema,
@@ -69,105 +68,97 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 	};
 
 	return (
-		<div className="flex flex-col gap-4">
-			<h2 className="text-2xl font-bold">Address Details</h2>
-
-			<Separator />
-
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className="w-full"
-			>
-				<FieldGroup>
-					<FieldGroup className="grid min-w-sm grid-cols-2">
-						<InputField
-							id={"input-field-first-name"}
-							label={"First Name"}
-							className={"focus-visible:ring-1 aria-invalid:ring-1"}
-							placeholder={"Enter your first name"}
-							required
-							description={errors.firstName?.message}
-							invalid={!!errors.firstName}
-							{...register("firstName")}
-						/>
-
-						<InputField
-							id={"input-field-last-name"}
-							label={"Last Name"}
-							className={"focus-visible:ring-1 aria-invalid:ring-1"}
-							placeholder={"Enter your last name"}
-							required
-							description={errors.lastName?.message}
-							invalid={!!errors.lastName}
-							{...register("lastName")}
-						/>
-					</FieldGroup>
-
-					<Controller
-						control={control}
-						name="dateOfBirth"
-						render={({ field }) => (
-							<DateField
-								id="input-field-date-of-birth"
-								label="Date of Birth"
-								className={
-									"focus-visible:ring-1 aria-invalid:ring-1"
-								}
-								placeholder="Select your birth date"
-								required
-								description={errors.dateOfBirth?.message}
-								invalid={!!errors.dateOfBirth}
-								date={field.value}
-								onDateChange={field.onChange}
-								onBlur={field.onBlur}
-								name={field.name}
-							/>
-						)}
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className="w-full"
+		>
+			<FieldGroup>
+				<FieldGroup className="grid min-w-sm grid-cols-2">
+					<InputField
+						id={"input-field-first-name"}
+						label={"First Name"}
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
+						placeholder={"Enter your first name"}
+						required
+						description={errors.firstName?.message}
+						invalid={!!errors.firstName}
+						{...register("firstName")}
 					/>
 
-					<Controller
-						control={control}
-						name="gender"
-						render={({ field }) => (
-							<DropdownField
-								id="gender-select"
-								label="Gender"
-								placeholder="Select your gender"
-								items={genderOptions}
-								description={errors.gender?.message}
-								invalid={!!errors.gender}
-								required
-								value={field.value}
-								onValueChange={field.onChange}
-								onBlur={field.onBlur}
-								name={field.name}
-							/>
-						)}
+					<InputField
+						id={"input-field-last-name"}
+						label={"Last Name"}
+						className={"focus-visible:ring-1 aria-invalid:ring-1"}
+						placeholder={"Enter your last name"}
+						required
+						description={errors.lastName?.message}
+						invalid={!!errors.lastName}
+						{...register("lastName")}
 					/>
-
-					<FormActions>
-						<Button
-							type="button"
-							variant="outline"
-							onClick={previousStep}
-						>
-							Back
-						</Button>
-
-						<Button
-							type="button"
-							variant="outline"
-							className="ml-auto"
-							onClick={handleReset}
-						>
-							<Trash2 />
-						</Button>
-
-						<Button type="submit">Next</Button>
-					</FormActions>
 				</FieldGroup>
-			</form>
-		</div>
+
+				<Controller
+					control={control}
+					name="dateOfBirth"
+					render={({ field }) => (
+						<DateField
+							id="input-field-date-of-birth"
+							label="Date of Birth"
+							className={"focus-visible:ring-1 aria-invalid:ring-1"}
+							placeholder="Select your birth date"
+							required
+							description={errors.dateOfBirth?.message}
+							invalid={!!errors.dateOfBirth}
+							date={field.value}
+							onDateChange={field.onChange}
+							onBlur={field.onBlur}
+							name={field.name}
+						/>
+					)}
+				/>
+
+				<Controller
+					control={control}
+					name="gender"
+					render={({ field }) => (
+						<DropdownField
+							id="gender-select"
+							label="Gender"
+							placeholder="Select your gender"
+							items={genderOptions}
+							description={errors.gender?.message}
+							invalid={!!errors.gender}
+							required
+							value={field.value}
+							onValueChange={field.onChange}
+							onBlur={field.onBlur}
+							name={field.name}
+						/>
+					)}
+				/>
+
+				<FormActions>
+					<Button
+						type="button"
+						variant="outline"
+						onClick={previousStep}
+					>
+						Back
+					</Button>
+
+					<Button
+						type="button"
+						variant="outline"
+						className="ml-auto"
+						onClick={handleReset}
+					>
+						<Trash2 />
+					</Button>
+
+					<Button type="submit">Next</Button>
+				</FormActions>
+			</FieldGroup>
+		</form>
 	);
 }
 
