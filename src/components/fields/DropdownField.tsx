@@ -15,9 +15,9 @@ interface DropdownItem {
 interface DropdownFieldProps {
 	id: string;
 	label: string;
-	className?: string;
-	placeholder: string;
 	items: DropdownItem[];
+	className?: string | undefined;
+	placeholder?: string | undefined;
 	description?: string | undefined;
 	disabled?: boolean | undefined;
 	invalid?: boolean | undefined;
@@ -31,22 +31,22 @@ interface DropdownFieldProps {
 export function DropdownField({
 	id,
 	label,
-	className = "",
-	placeholder,
 	items,
-	description,
+	className = "",
+	placeholder = "",
+	description = "",
 	disabled = false,
 	invalid = false,
 	required = false,
-	value,
+	value = "",
 	onValueChange = () => {},
-	onBlur,
-	name,
+	onBlur = () => {},
+	name = "",
 }: DropdownFieldProps) {
 	return (
 		<Field
-			data-disabled={disabled ? true : undefined}
-			data-invalid={invalid ? true : undefined}
+			data-disabled={disabled ? true : false}
+			data-invalid={invalid ? true : false}
 		>
 			<FieldLabel htmlFor={id}>
 				{label}
@@ -54,10 +54,10 @@ export function DropdownField({
 			</FieldLabel>
 
 			<Select
-				value={value ?? ""}
+				value={value}
 				onValueChange={onValueChange}
 				disabled={disabled}
-				name={name ?? ""}
+				name={name}
 			>
 				<SelectTrigger
 					id={id}

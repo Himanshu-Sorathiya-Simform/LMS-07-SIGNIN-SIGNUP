@@ -5,14 +5,14 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 } from "@/components/ui/input-group";
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, ReactNode } from "react";
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 	id: string;
 	label: string;
 	description?: string | undefined;
 	invalid?: boolean | undefined;
-	endAddon?: React.ReactNode;
+	endAddon?: ReactNode;
 }
 
 export function InputField({
@@ -30,8 +30,8 @@ export function InputField({
 }: InputFieldProps) {
 	return (
 		<Field
-			data-disabled={disabled ? true : undefined}
-			data-invalid={invalid ? true : undefined}
+			data-disabled={disabled ? true : false}
+			data-invalid={invalid ? true : false}
 		>
 			<FieldLabel htmlFor={id}>
 				{label}

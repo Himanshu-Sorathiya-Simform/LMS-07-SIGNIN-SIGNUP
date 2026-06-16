@@ -48,6 +48,7 @@ function getInitialAccountDetails(): AccountDetailsSchema {
 		password: "",
 		confirmPassword: "",
 		phoneNumber: "",
+		termsAndConditions: false,
 	});
 }
 

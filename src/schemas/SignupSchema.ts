@@ -50,6 +50,10 @@ const accountDetailsSchema = z
 			})
 			.optional()
 			.or(z.literal("")),
+
+		termsAndConditions: z.boolean().refine((val) => val === true, {
+			message: "You must accept company terms and policies",
+		}),
 	})
 	.refine((data) => data.confirmPassword === data.password, {
 		message: "Both password do not match",

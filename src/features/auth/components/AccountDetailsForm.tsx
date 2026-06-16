@@ -1,3 +1,4 @@
+import CheckboxField from "@/components/fields/CheckboxField.tsx";
 import { InputField } from "@/components/fields/InputField.tsx";
 import FormActions from "@/components/FormActions";
 import { Button } from "@/components/ui/button.tsx";
@@ -10,7 +11,7 @@ import { getInitialAccountDetails, getUsers } from "@/utils/sessionStorageUtils.
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitHandler, Controller, useForm } from "react-hook-form";
 
 interface AccountDetailsFormProps {
 	nextStep: () => void;
@@ -20,6 +21,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const {
+		control,
 		handleSubmit,
 		register,
 		reset,
@@ -76,6 +78,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 			password: "",
 			confirmPassword: "",
 			phoneNumber: "",
+			termsAndConditions: false,
 		});
 	};
 
@@ -135,6 +138,27 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 					description={errors.phoneNumber?.message}
 					invalid={!!errors.phoneNumber}
 					{...register("phoneNumber")}
+				/>
+
+				<Controller
+					control={control}
+					name="termsAndConditions"
+					render={({ field }) => (
+						<CheckboxField
+							id="input-field-terms"
+							label="Accept terms and conditions"
+							className={"focus-visible:ring-1 aria-invalid:ring-1"}
+							description={
+								errors.termsAndConditions?.message
+								?? "By clicking this checkbox, you agree to the terms."
+							}
+							invalid={!!errors.termsAndConditions}
+							checked={field.value}
+							onCheckedChange={field.onChange}
+							onBlur={field.onBlur}
+							name={field.name}
+						/>
+					)}
 				/>
 
 				<FormActions className={"justify-end"}>
