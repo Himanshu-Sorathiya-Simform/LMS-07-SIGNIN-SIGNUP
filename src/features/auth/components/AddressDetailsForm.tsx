@@ -1,7 +1,7 @@
 import { InputField } from "@/components/fields/InputField.tsx";
+import FormActions from "@/components/FormActions";
 import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
-import FormActions from "@/features/auth/components/FormActions";
 import {
 	type AccountDetailsSchema,
 	type AddressDetailsSchema,
@@ -10,7 +10,7 @@ import {
 } from "@/schemas/SignupSchema.ts";
 import { getInitialAddressDetails, setUsers } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash2 } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -84,10 +84,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 	};
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="w-full"
-		>
+		<form onSubmit={handleSubmit(onSubmit)}>
 			<FieldGroup>
 				<FieldGroup className="grid grid-cols-2">
 					<InputField
@@ -175,7 +172,7 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						className="ml-auto"
 						onClick={handleReset}
 					>
-						<Trash2 />
+						<RefreshCcw />
 					</Button>
 
 					<Button type="submit">Submit</Button>

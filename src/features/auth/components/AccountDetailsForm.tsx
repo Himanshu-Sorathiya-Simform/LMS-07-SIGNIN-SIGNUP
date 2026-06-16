@@ -1,14 +1,14 @@
 import { InputField } from "@/components/fields/InputField.tsx";
+import FormActions from "@/components/FormActions";
 import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
-import FormActions from "@/features/auth/components/FormActions";
 import {
 	type AccountDetailsSchema,
 	accountDetailsSchema,
 } from "@/schemas/SignupSchema.ts";
 import { getInitialAccountDetails, getUsers } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Trash2 } from "lucide-react";
+import { Eye, EyeOff, RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
@@ -80,10 +80,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 	};
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="w-full"
-		>
+		<form onSubmit={handleSubmit(onSubmit)}>
 			<FieldGroup>
 				<InputField
 					id={"input-field-email"}
@@ -146,7 +143,7 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 						variant="outline"
 						onClick={handleReset}
 					>
-						<Trash2 />
+						<RefreshCcw />
 					</Button>
 
 					<Button type="submit">Next</Button>

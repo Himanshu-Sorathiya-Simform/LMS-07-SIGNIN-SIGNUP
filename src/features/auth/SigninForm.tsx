@@ -1,12 +1,12 @@
 import { InputField } from "@/components/fields/InputField.tsx";
+import FormActions from "@/components/FormActions";
 import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import FormActions from "@/features/auth/components/FormActions";
 import { type SigninSchema, signinSchema } from "@/schemas/SigninSchema.ts";
 import { getInitialSigninDetails, getUsers } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash2 } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
@@ -75,62 +75,59 @@ function SigninForm({ onLoginSuccess }: SigninFormProps) {
 	};
 
 	return (
-		<div className="flex flex-col gap-5">
-			<h2 className="text-2xl font-bold">Signin</h2>
+		<>
+			<div className="flex flex-col gap-4 rounded-md p-5 outline-1 outline-gray-300">
+				<h2 className="text-2xl font-bold">Signin</h2>
 
-			<Separator />
+				<Separator />
 
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className="w-full"
-			>
-				<FieldGroup>
-					<InputField
-						id={"input-field-email"}
-						label={"Email"}
-						type={"email"}
-						className={"focus-visible:ring-1 aria-invalid:ring-1"}
-						placeholder={"Enter your email"}
-						required
-						description={errors.email?.message}
-						invalid={!!errors.email}
-						{...register("email")}
-					/>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<FieldGroup>
+						<InputField
+							id={"input-field-email"}
+							label={"Email"}
+							type={"email"}
+							className={"focus-visible:ring-1 aria-invalid:ring-1"}
+							placeholder={"Enter your email"}
+							required
+							description={errors.email?.message}
+							invalid={!!errors.email}
+							{...register("email")}
+						/>
 
-					<InputField
-						id={"input-field-password"}
-						label={"Password"}
-						type={"password"}
-						className={"focus-visible:ring-1 aria-invalid:ring-1"}
-						placeholder={"Enter your password"}
-						required
-						description={errors.password?.message}
-						invalid={!!errors.password}
-						{...register("password")}
-					/>
+						<InputField
+							id={"input-field-password"}
+							label={"Password"}
+							type={"password"}
+							className={"focus-visible:ring-1 aria-invalid:ring-1"}
+							placeholder={"Enter your password"}
+							required
+							description={errors.password?.message}
+							invalid={!!errors.password}
+							{...register("password")}
+						/>
 
-					<FormActions className="justify-center">
-						<Button
-							type="submit"
-							className="flex-1"
-						>
-							Login
-						</Button>
+						<FormActions className="justify-center">
+							<Button
+								type="submit"
+								className="flex-1"
+							>
+								Login
+							</Button>
 
-						<Button
-							type="button"
-							variant="outline"
-							onClick={handleReset}
-						>
-							<Trash2 />
-						</Button>
-					</FormActions>
-				</FieldGroup>
-			</form>
+							<Button
+								type="button"
+								variant="outline"
+								onClick={handleReset}
+							>
+								<RefreshCcw />
+							</Button>
+						</FormActions>
+					</FieldGroup>
+				</form>
+			</div>
 
-			<Separator />
-
-			<p className="text-muted-foreground text-center text-sm">
+			<p className="text-muted-foreground mt-4 text-center text-sm">
 				New member?{" "}
 				<Link
 					to="/signup"
@@ -139,7 +136,7 @@ function SigninForm({ onLoginSuccess }: SigninFormProps) {
 					Sign up here
 				</Link>
 			</p>
-		</div>
+		</>
 	);
 }
 
