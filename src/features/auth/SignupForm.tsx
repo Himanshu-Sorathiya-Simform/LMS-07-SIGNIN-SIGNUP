@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AccountDetailsForm from "./components/AccountDetailsForm.tsx";
 import AddressDetailsForm from "./components/AddressDetailsForm.tsx";
 import PersonalDetailsForm from "./components/PersonalDetailsForm.tsx";
 
 function SignupForm() {
-	const [currentStep, setCurrentStep] = useState(0);
+	const [currentStep, setCurrentStep] = useState(() => {
+		const savedStep = sessionStorage.getItem("signup_step");
+
+		return savedStep ? Number(savedStep) : 0;
+	});
+
+	useEffect(() => {
+		sessionStorage.setItem("signup_current_step", currentStep.toString());
+	}, [currentStep]);
 
 	return (
 		<>

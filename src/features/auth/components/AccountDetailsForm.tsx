@@ -6,9 +6,12 @@ import {
 	type AccountDetailsSchema,
 	accountDetailsSchema,
 } from "@/schemas/SignupSchema.ts";
+import { getInitialAccountDetails } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EyeOff, RotateCcw } from "lucide-react";
+import { EyeOff, Trash2 } from "lucide-react";
+import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router";
 
 interface AccountDetailsFormProps {
 	nextStep: () => void;
@@ -19,23 +22,36 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 		handleSubmit,
 		register,
 		reset,
+		watch,
 		formState: { errors },
 	} = useForm<AccountDetailsSchema>({
 		resolver: zodResolver(accountDetailsSchema),
-		defaultValues: {
-			email: "",
-			password: "",
-			confirmPassword: "",
-			phoneNumber: "",
-		},
+		defaultValues: getInitialAccountDetails(),
 	});
+
+	const formValues = watch();
+
+	useEffect(() => {
+		sessionStorage.setItem("signup_account_details", JSON.stringify(formValues));
+	}, [formValues]);
 
 	const onSubmit: SubmitHandler<AccountDetailsSchema> = (
 		data: AccountDetailsSchema,
 	) => {
-		nextStep();
+		sessionStorage.setItem("signup_account_details", JSON.stringify(data));
 
-		console.log(data);
+		nextStep();
+	};
+
+	const handleReset = () => {
+		sessionStorage.removeItem("signup_account_details");
+
+		reset({
+			email: "",
+			password: "",
+			confirmPassword: "",
+			phoneNumber: "",
+		});
 	};
 
 	return (
@@ -92,13 +108,23 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 					<Button
 						type="button"
 						variant="outline"
-						onClick={() => reset()}
+						onClick={handleReset}
 					>
-						<RotateCcw />
+						<Trash2 />
 					</Button>
 
 					<Button type="submit">Next</Button>
 				</FormActions>
+
+				<p className="text-muted-foreground mt-4 text-center text-sm">
+					Already a member?{" "}
+					<Link
+						to="/signin"
+						className="text-primary font-medium underline-offset-4 transition-colors hover:underline"
+					>
+						Sign in here
+					</Link>
+				</p>
 			</FieldGroup>
 		</form>
 	);

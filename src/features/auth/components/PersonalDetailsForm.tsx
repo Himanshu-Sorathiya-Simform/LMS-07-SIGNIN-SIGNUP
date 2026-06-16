@@ -8,8 +8,10 @@ import {
 	type PersonalDetailsSchema,
 	personalDetailsSchema,
 } from "@/schemas/SignupSchema.ts";
+import { getInitialPersonalDetails } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RotateCcw } from "lucide-react";
+import { Trash2 } from "lucide-react";
+import { useEffect } from "react";
 import { type SubmitHandler, Controller, useForm } from "react-hook-form";
 
 interface PersonalDetailsFormProps {
@@ -30,23 +32,39 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 		register,
 		reset,
 		handleSubmit,
+		watch,
 		formState: { errors },
 	} = useForm<PersonalDetailsSchema>({
 		resolver: zodResolver(personalDetailsSchema),
-		defaultValues: {
-			firstName: "",
-			lastName: "",
-			dateOfBirth: new Date(),
-			gender: "male",
-		},
+		defaultValues: getInitialPersonalDetails(),
 	});
+
+	const formValues = watch();
+
+	useEffect(() => {
+		sessionStorage.setItem(
+			"signup_personal_details",
+			JSON.stringify(formValues),
+		);
+	}, [formValues]);
 
 	const onSubmit: SubmitHandler<PersonalDetailsSchema> = (
 		data: PersonalDetailsSchema,
 	) => {
-		nextStep();
+		sessionStorage.setItem("signup_personal_details", JSON.stringify(data));
 
-		console.log(data);
+		nextStep();
+	};
+
+	const handleReset = () => {
+		sessionStorage.removeItem("signup_personal_details");
+
+		reset({
+			firstName: "",
+			lastName: "",
+			dateOfBirth: new Date(),
+			gender: "male",
+		});
 	};
 
 	return (
@@ -132,9 +150,9 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						type="button"
 						variant="outline"
 						className="ml-auto"
-						onClick={() => reset()}
+						onClick={handleReset}
 					>
-						<RotateCcw />
+						<Trash2 />
 					</Button>
 
 					<Button type="submit">Next</Button>

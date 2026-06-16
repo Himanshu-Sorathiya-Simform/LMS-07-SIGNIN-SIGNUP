@@ -6,8 +6,10 @@ import {
 	type AddressDetailsSchema,
 	addressDetailsSchema,
 } from "@/schemas/SignupSchema.ts";
+import { getInitialAddressDetails } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RotateCcw } from "lucide-react";
+import { Trash2 } from "lucide-react";
+import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 interface AddressDetailsFormProps {
@@ -19,23 +21,37 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 		handleSubmit,
 		register,
 		reset,
+		watch,
 		formState: { errors },
 	} = useForm<AddressDetailsSchema>({
 		resolver: zodResolver(addressDetailsSchema),
-		defaultValues: {
+		defaultValues: getInitialAddressDetails(),
+	});
+
+	const formValues = watch();
+
+	useEffect(() => {
+		sessionStorage.setItem("signup_address_details", JSON.stringify(formValues));
+	}, [formValues]);
+
+	const onSubmit: SubmitHandler<AddressDetailsSchema> = () => {
+		sessionStorage.removeItem("signup_current_step");
+		sessionStorage.removeItem("signup_account_details");
+		sessionStorage.removeItem("signup_personal_details");
+		sessionStorage.removeItem("signup_address_details");
+	};
+
+	const handleReset = () => {
+		sessionStorage.removeItem("signup_address_details");
+
+		reset({
 			city: "",
 			landmark: "",
 			street: "",
 			state: "",
 			zip: "",
 			country: "",
-		},
-	});
-
-	const onSubmit: SubmitHandler<AddressDetailsSchema> = (
-		data: AddressDetailsSchema,
-	) => {
-		console.log(data);
+		});
 	};
 
 	return (
@@ -128,12 +144,12 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						type="button"
 						variant="outline"
 						className="ml-auto"
-						onClick={() => reset()}
+						onClick={handleReset}
 					>
-						<RotateCcw />
+						<Trash2 />
 					</Button>
 
-					<Button type="submit">Next</Button>
+					<Button type="submit">Submit</Button>
 				</FormActions>
 			</FieldGroup>
 		</form>
