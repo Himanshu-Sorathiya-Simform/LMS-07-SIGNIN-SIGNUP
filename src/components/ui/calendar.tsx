@@ -1,7 +1,7 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import * as React from "react";
+import { useEffect, useRef } from "react";
 import {
 	type DayButton,
 	type Locale,
@@ -197,10 +197,10 @@ function CalendarDayButton({
 }: React.ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
 	const defaultClassNames = getDefaultClassNames();
 
-	const ref = React.useRef<HTMLButtonElement>(null);
+	const ref = useRef<HTMLButtonElement>(null);
 	const modifiersFocused = modifiers["focused"];
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (modifiersFocused) ref.current?.focus();
 	}, [modifiersFocused]);
 

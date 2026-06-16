@@ -39,11 +39,10 @@ export function InputField({
 			</FieldLabel>
 
 			{endAddon ?
-				<InputGroup>
+				<InputGroup className={className}>
 					<InputGroupInput
 						id={id}
 						type={type}
-						className={className}
 						placeholder={placeholder}
 						disabled={disabled}
 						aria-invalid={invalid}
