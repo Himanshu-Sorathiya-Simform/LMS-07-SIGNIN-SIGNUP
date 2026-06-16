@@ -2,12 +2,7 @@ import z from "zod";
 
 const accountDetailsSchema = z
 	.object({
-		email: z
-			.string()
-			.trim()
-			.toLowerCase()
-			.min(1, { message: "Email address is required" })
-			.pipe(z.email({ message: "Please enter a valid email address" })),
+		email: z.email({ message: "Please enter a valid email address" }),
 
 		password: z
 			.string()
