@@ -7,7 +7,7 @@ import RootLayout from "./layouts/RootLayout.tsx";
 import { ProtectedRoute, PublicRoute } from "./routes/Route.tsx";
 
 function App() {
-	const { isAuthenticated, logout } = useAuth();
+	const { isAuthenticated, login, logout } = useAuth();
 
 	const router = createBrowserRouter([
 		{
@@ -21,7 +21,7 @@ function App() {
 							children: [
 								{
 									path: "/signin",
-									element: <SigninForm />,
+									element: <SigninForm onLoginSuccess={login} />,
 								},
 								{
 									path: "/signup",

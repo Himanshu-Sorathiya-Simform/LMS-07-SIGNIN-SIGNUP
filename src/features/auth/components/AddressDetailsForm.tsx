@@ -11,12 +11,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2 } from "lucide-react";
 import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 interface AddressDetailsFormProps {
 	previousStep: () => void;
 }
 
 function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
+	const navigate = useNavigate();
+
 	const {
 		handleSubmit,
 		register,
@@ -34,7 +37,25 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 		sessionStorage.setItem("signup_address_details", JSON.stringify(formValues));
 	}, [formValues]);
 
-	const onSubmit: SubmitHandler<AddressDetailsSchema> = () => {
+	const onSubmit: SubmitHandler<AddressDetailsSchema> = (
+		data: AddressDetailsSchema,
+	) => {
+		const savedAccount = sessionStorage.getItem("signup_account_details");
+		const savedPersonal = sessionStorage.getItem("signup_personal_details");
+
+		const accountDetails = savedAccount ? JSON.parse(savedAccount) : {};
+		const personalDetails = savedPersonal ? JSON.parse(savedPersonal) : {};
+
+		const completeSignupData = {
+			...accountDetails,
+			...personalDetails,
+			...data,
+		};
+
+		console.log(completeSignupData);
+
+		navigate("/signin");
+
 		sessionStorage.removeItem("signup_current_step");
 		sessionStorage.removeItem("signup_account_details");
 		sessionStorage.removeItem("signup_personal_details");

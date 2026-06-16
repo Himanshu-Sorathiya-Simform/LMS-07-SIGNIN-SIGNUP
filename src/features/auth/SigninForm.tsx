@@ -8,9 +8,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2 } from "lucide-react";
 import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
-function SigninForm() {
+interface SigninFormProps {
+	onLoginSuccess: () => void;
+}
+
+function SigninForm({ onLoginSuccess }: SigninFormProps) {
+	const navigate = useNavigate();
+
 	const {
 		register,
 		handleSubmit,
@@ -29,7 +35,11 @@ function SigninForm() {
 	}, [formValues]);
 
 	const onSubmit: SubmitHandler<SigninSchema> = function () {
+		onLoginSuccess();
+
 		sessionStorage.removeItem("signin_details");
+
+		navigate("/profile");
 	};
 
 	const handleReset = () => {
