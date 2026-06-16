@@ -76,6 +76,7 @@ export function DateField({
 						mode="single"
 						selected={date}
 						onSelect={onDateChange}
+						captionLayout="dropdown"
 					/>
 				</PopoverContent>
 			</Popover>

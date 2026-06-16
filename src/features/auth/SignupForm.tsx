@@ -14,7 +14,7 @@ function SignupForm() {
 	});
 
 	useEffect(() => {
-		sessionStorage.setItem("signup_current_step", currentStep.toString());
+		sessionStorage.setItem("signup_step", currentStep.toString());
 	}, [currentStep]);
 
 	return (
