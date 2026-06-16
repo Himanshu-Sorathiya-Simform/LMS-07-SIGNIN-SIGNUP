@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
+import { Outlet } from "react-router";
 
-interface AuthLayoutProps {
-	children: ReactNode;
-}
-
-function AuthLayout({ children }: AuthLayoutProps) {
-	return <section className="w-full max-w-xl min-w-md">{children}</section>;
+function AuthLayout() {
+	return (
+		<section className="w-full max-w-xl min-w-md">
+			<Outlet />
+		</section>
+	);
 }
 
 export default AuthLayout;

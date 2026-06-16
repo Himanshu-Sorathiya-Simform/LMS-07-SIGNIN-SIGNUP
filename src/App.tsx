@@ -1,11 +1,64 @@
-import SignupLayout from "./layouts/SignupLayout.tsx";
+import SignupForm from "@/features/auth/SignupForm.tsx";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import SigninForm from "./features/auth/SigninForm.tsx";
+import { useAuth } from "./hooks/useAuth.ts";
+import AuthLayout from "./layouts/AuthLayout.tsx";
+import RootLayout from "./layouts/RootLayout.tsx";
+import { ProtectedRoute, PublicRoute } from "./routes/Route.tsx";
 
 function App() {
-	return (
-		<div className="flex h-screen items-center justify-center">
-			<SignupLayout />
-		</div>
-	);
+	const { isAuthenticated, logout } = useAuth();
+
+	const router = createBrowserRouter([
+		{
+			element: <RootLayout />,
+			children: [
+				{
+					element: <PublicRoute isAuthenticated={isAuthenticated} />,
+					children: [
+						{
+							element: <AuthLayout />,
+							children: [
+								{
+									path: "/signin",
+									element: <SigninForm />,
+								},
+								{
+									path: "/signup",
+									element: <SignupForm />,
+								},
+							],
+						},
+					],
+				},
+				{
+					element: <ProtectedRoute isAuthenticated={isAuthenticated} />,
+					children: [
+						{
+							path: "/profile",
+							element: (
+								<div className="space-y-4 text-center">
+									<p>profile</p>
+									<button onClick={logout}>Logout</button>
+								</div>
+							),
+						},
+					],
+				},
+				{
+					path: "*",
+					element: (
+						<Navigate
+							to={isAuthenticated ? "/profile" : "/signin"}
+							replace
+						/>
+					),
+				},
+			],
+		},
+	]);
+
+	return <RouterProvider router={router} />;
 }
 
 export default App;
