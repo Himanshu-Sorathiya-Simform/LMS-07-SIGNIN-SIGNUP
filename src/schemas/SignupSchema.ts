@@ -1,58 +1,65 @@
 import z from "zod";
 
-const accountDetailsSchema = z.object({
-	email: z
-		.string()
-		.trim()
-		.toLowerCase()
-		.min(1, { message: "Email address is required" })
-		.pipe(z.email({ message: "Please enter a valid email address" })),
+const accountDetailsSchema = z
+	.object({
+		email: z
+			.string()
+			.trim()
+			.toLowerCase()
+			.min(1, { message: "Email address is required" })
+			.pipe(z.email({ message: "Please enter a valid email address" })),
 
-	password: z
-		.string()
-		.min(1, { message: "Password is required" })
-		.min(8, { message: "Password must be at least 8 characters" })
-		.max(18, { message: "Password must not exceed 18 characters" })
-		.regex(/[A-Z]/, {
-			message: "Password must contain at least one uppercase letter",
-		})
-		.regex(/[a-z]/, {
-			message: "Password must contain at least one lowercase letter",
-		})
-		.regex(/[0-9]/, { message: "Password must contain at least one number" })
-		.regex(/[^A-Za-z0-9]/, {
-			message: "Password must contain at least one special character",
-		})
-		.regex(/^[^<>]*$/, {
-			message: "Password contains invalid characters",
-		}),
+		password: z
+			.string()
+			.min(1, { message: "Password is required" })
+			.min(8, { message: "Password must be at least 8 characters" })
+			.max(18, { message: "Password must not exceed 18 characters" })
+			.regex(/[A-Z]/, {
+				message: "Password must contain at least one uppercase letter",
+			})
+			.regex(/[a-z]/, {
+				message: "Password must contain at least one lowercase letter",
+			})
+			.regex(/[0-9]/, { message: "Password must contain at least one number" })
+			.regex(/[^A-Za-z0-9]/, {
+				message: "Password must contain at least one special character",
+			})
+			.regex(/^[^<>]*$/, {
+				message: "Password contains invalid characters",
+			}),
 
-	confirmPassword: z
-		.string()
-		.min(1, { message: "Password is required" })
-		.min(8, { message: "Password must be at least 8 characters" })
-		.max(18, { message: "Password must not exceed 18 characters" })
-		.regex(/[A-Z]/, {
-			message: "Password must contain at least one uppercase letter",
-		})
-		.regex(/[a-z]/, {
-			message: "Password must contain at least one lowercase letter",
-		})
-		.regex(/[0-9]/, { message: "Password must contain at least one number" })
-		.regex(/[^A-Za-z0-9]/, {
-			message: "Password must contain at least one special character",
-		})
-		.regex(/^[^<>]*$/, {
-			message: "Password contains invalid characters",
-		}),
+		confirmPassword: z
+			.string()
+			.min(1, { message: "Password is required" })
+			.min(8, { message: "Password must be at least 8 characters" })
+			.max(18, { message: "Password must not exceed 18 characters" })
+			.regex(/[A-Z]/, {
+				message: "Password must contain at least one uppercase letter",
+			})
+			.regex(/[a-z]/, {
+				message: "Password must contain at least one lowercase letter",
+			})
+			.regex(/[0-9]/, { message: "Password must contain at least one number" })
+			.regex(/[^A-Za-z0-9]/, {
+				message: "Password must contain at least one special character",
+			})
+			.regex(/^[^<>]*$/, {
+				message: "Password contains invalid characters",
+			}),
 
-	phoneNumber: z
-		.string()
-		.trim()
-		.regex(/^[0-9]{10}$/, { message: "Phone number must be exactly 10 digits" })
-		.optional()
-		.or(z.literal("")),
-});
+		phoneNumber: z
+			.string()
+			.trim()
+			.regex(/^[0-9]{10}$/, {
+				message: "Phone number must be exactly 10 digits",
+			})
+			.optional()
+			.or(z.literal("")),
+	})
+	.refine((data) => data.confirmPassword === data.password, {
+		message: "Both password do not match",
+		path: ['confirmPassword']
+	});
 
 const personalDetailsSchema = z.object({
 	firstName: z
@@ -79,15 +86,7 @@ const personalDetailsSchema = z.object({
 		.date({ message: "Date of birth is required" })
 		.refine((date) => date <= new Date(), {
 			message: "Date of birth cannot be in the future",
-		})
-		.refine(
-			(date) => {
-				const cutoff = new Date();
-				cutoff.setFullYear(cutoff.getFullYear() - 13);
-				return date <= cutoff;
-			},
-			{ message: "You must be at least 13 years old to create an account" },
-		),
+		}),
 
 	gender: z.enum(["male", "female", "other", "prefer_not_to_say"], {
 		message: "Please select a valid gender option",
@@ -150,5 +149,5 @@ export {
 	type PersonalDetailsSchema,
 	accountDetailsSchema,
 	addressDetailsSchema,
-	personalDetailsSchema,
+	personalDetailsSchema
 };
