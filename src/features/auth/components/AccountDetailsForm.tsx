@@ -8,8 +8,8 @@ import {
 } from "@/schemas/SignupSchema.ts";
 import { getInitialAccountDetails, getUsers } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EyeOff, Trash2 } from "lucide-react";
-import { useEffect } from "react";
+import { Eye, EyeOff, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router";
 
@@ -18,6 +18,8 @@ interface AccountDetailsFormProps {
 }
 
 function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
+	const [showPassword, setShowPassword] = useState(false);
+
 	const {
 		handleSubmit,
 		register,
@@ -98,10 +100,20 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 				<InputField
 					id={"input-field-password"}
 					label={"Password"}
-					type={"password"}
+					type={showPassword ? "text" : "password"}
 					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your password"}
-					endAddon={<EyeOff />}
+					endAddon={
+						<Button
+							type="button"
+							variant={"ghost"}
+							onClick={() => setShowPassword((prev) => !prev)}
+						>
+							{showPassword ?
+								<Eye />
+							:	<EyeOff />}
+						</Button>
+					}
 					required
 					description={errors.password?.message}
 					invalid={!!errors.password}
