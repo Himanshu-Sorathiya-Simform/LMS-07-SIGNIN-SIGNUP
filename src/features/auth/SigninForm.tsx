@@ -3,26 +3,42 @@ import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
 import FormActions from "@/features/auth/components/FormActions";
 import { type SigninSchema, signinSchema } from "@/schemas/SigninSchema.ts";
+import { getInitialSigninDetails } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RotateCcw } from "lucide-react";
+import { Trash2 } from "lucide-react";
+import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router";
 
 function SigninForm() {
 	const {
 		register,
 		handleSubmit,
 		reset,
+		watch,
 		formState: { errors },
 	} = useForm<SigninSchema>({
 		resolver: zodResolver(signinSchema),
-		defaultValues: {
-			email: "",
-			password: "",
-		},
+		defaultValues: getInitialSigninDetails(),
 	});
 
-	const onSubmit: SubmitHandler<SigninSchema> = (data: SigninSchema) => {
-		console.log(data);
+	const formValues = watch();
+
+	useEffect(() => {
+		sessionStorage.setItem("signin_details", JSON.stringify(formValues));
+	}, [formValues]);
+
+	const onSubmit: SubmitHandler<SigninSchema> = function () {
+		sessionStorage.removeItem("signin_details");
+	};
+
+	const handleReset = () => {
+		sessionStorage.removeItem("signin_details");
+
+		reset({
+			email: "",
+			password: "",
+		});
 	};
 
 	return (
@@ -66,11 +82,21 @@ function SigninForm() {
 					<Button
 						type="button"
 						variant="outline"
-						onClick={() => reset()}
+						onClick={handleReset}
 					>
-						<RotateCcw />
+						<Trash2 />
 					</Button>
 				</FormActions>
+
+				<p className="text-muted-foreground mt-4 text-center text-sm">
+					New member?{" "}
+					<Link
+						to="/signup"
+						className="text-primary font-medium underline-offset-4 transition-colors hover:underline"
+					>
+						Sign up here
+					</Link>
+				</p>
 			</FieldGroup>
 		</form>
 	);
