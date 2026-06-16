@@ -8,7 +8,7 @@ import RootLayout from "./layouts/RootLayout.tsx";
 import { ProtectedRoute, PublicRoute } from "./routes/Route.tsx";
 
 function App() {
-	const { isAuthenticated, login, logout } = useAuth();
+	const { isAuthenticated, login, logout, userEmail } = useAuth();
 
 	const router = createBrowserRouter([
 		{
@@ -37,7 +37,12 @@ function App() {
 					children: [
 						{
 							path: "/profile",
-							element: <Profile onLogout={logout} />,
+							element: (
+								<Profile
+									userEmail={userEmail}
+									onLogout={logout}
+								/>
+							),
 						},
 					],
 				},
