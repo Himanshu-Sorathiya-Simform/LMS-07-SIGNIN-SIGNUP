@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import AccountDetailsForm from "./components/AccountDetailsForm.tsx";
 import AddressDetailsForm from "./components/AddressDetailsForm.tsx";
 import PersonalDetailsForm from "./components/PersonalDetailsForm.tsx";
+import Stepper from "./components/Stepper.tsx";
 
 function SignupForm() {
 	const [currentStep, setCurrentStep] = useState(() => {
@@ -18,6 +19,8 @@ function SignupForm() {
 
 	return (
 		<div className="flex flex-col gap-4">
+			<Stepper currentStep={currentStep} />
+
 			<h2 className="text-2xl font-bold">
 				{currentStep === 0 && "Account Detail"}
 				{currentStep === 1 && "Personal Detail"}
