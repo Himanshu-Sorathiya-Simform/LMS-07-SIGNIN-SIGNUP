@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
 import FormActions from "@/features/auth/components/FormActions";
 import { type SigninSchema, signinSchema } from "@/schemas/SigninSchema.ts";
-import { getInitialSigninDetails } from "@/utils/sessionStorageUtils.ts";
+import { getInitialSigninDetails, getUsers } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2 } from "lucide-react";
 import { useEffect } from "react";
@@ -22,6 +22,7 @@ function SigninForm({ onLoginSuccess }: SigninFormProps) {
 		handleSubmit,
 		reset,
 		watch,
+		setError,
 		formState: { errors },
 	} = useForm<SigninSchema>({
 		resolver: zodResolver(signinSchema),
@@ -34,11 +35,32 @@ function SigninForm({ onLoginSuccess }: SigninFormProps) {
 		sessionStorage.setItem("signin_details", JSON.stringify(formValues));
 	}, [formValues]);
 
-	const onSubmit: SubmitHandler<SigninSchema> = function () {
+	const onSubmit: SubmitHandler<SigninSchema> = function (data: SigninSchema) {
+		const { email, password } = data;
+		const users = getUsers();
+
+		const userExist = users.find((user) => user.email === email);
+		if (!userExist) {
+			setError("email", {
+				type: "manual",
+				message: "User does not exist",
+			});
+
+			return;
+		}
+
+		const isPasswordCorrect = userExist.password === password;
+		if (!isPasswordCorrect) {
+			setError("password", {
+				type: "manual",
+				message: "Password is incorrect",
+			});
+
+			return;
+		}
+
 		onLoginSuccess();
-
 		sessionStorage.removeItem("signin_details");
-
 		navigate("/profile");
 	};
 

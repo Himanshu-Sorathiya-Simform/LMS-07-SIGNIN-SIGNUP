@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
 import FormActions from "@/features/auth/components/FormActions";
 import {
+	type AccountDetailsSchema,
 	type AddressDetailsSchema,
+	type PersonalDetailsSchema,
 	addressDetailsSchema,
 } from "@/schemas/SignupSchema.ts";
-import type { User } from "@/types/user.types.ts";
-import { getInitialAddressDetails } from "@/utils/sessionStorageUtils.ts";
+import { getInitialAddressDetails, setUsers } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2 } from "lucide-react";
 import { useEffect } from "react";
@@ -44,21 +45,24 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 		const savedAccount = sessionStorage.getItem("signup_account_details");
 		const savedPersonal = sessionStorage.getItem("signup_personal_details");
 
-		const accountDetails = savedAccount ? JSON.parse(savedAccount) : {};
-		const personalDetails = savedPersonal ? JSON.parse(savedPersonal) : {};
+		const accountDetails: Omit<AccountDetailsSchema, "confirmPassword"> =
+			savedAccount ? JSON.parse(savedAccount) : {};
+		const personalDetails: PersonalDetailsSchema =
+			savedPersonal ? JSON.parse(savedPersonal) : {};
 
 		const completeSignupData = {
 			...accountDetails,
 			...personalDetails,
 			...data,
+			dateOfBirth:
+				personalDetails.dateOfBirth instanceof Date ?
+					personalDetails.dateOfBirth.toISOString()
+				:	String(personalDetails.dateOfBirth),
+			landmark: data.landmark ?? "",
+			phoneNumber: accountDetails.phoneNumber ?? "",
 		};
 
-		const existingUsers = JSON.parse(
-			localStorage.getItem("auth-users") ?? "[]",
-		) as User[];
-		existingUsers.push(completeSignupData);
-
-		localStorage.setItem("auth-users", JSON.stringify(existingUsers));
+		setUsers(completeSignupData);
 
 		navigate("/signin");
 

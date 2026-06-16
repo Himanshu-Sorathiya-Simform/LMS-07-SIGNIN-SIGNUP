@@ -4,6 +4,7 @@ import type {
 	AddressDetailsSchema,
 	PersonalDetailsSchema,
 } from "@/schemas/SignupSchema.ts";
+import type { User } from "@/types/user.types.ts";
 
 function getSessionData<T>(
 	key: string,
@@ -21,6 +22,17 @@ function getSessionData<T>(
 	} catch {
 		return fallbackValues;
 	}
+}
+
+function getUsers() {
+	return JSON.parse(localStorage.getItem("auth-users") ?? "[]") as User[];
+}
+
+function setUsers(user: User) {
+	const users = getUsers();
+	users.push(user);
+
+	localStorage.setItem("auth-users", JSON.stringify(users));
 }
 
 function getInitialSigninDetails(): SigninSchema {
@@ -74,4 +86,6 @@ export {
 	getInitialAddressDetails,
 	getInitialPersonalDetails,
 	getInitialSigninDetails,
+	getUsers,
+	setUsers,
 };
