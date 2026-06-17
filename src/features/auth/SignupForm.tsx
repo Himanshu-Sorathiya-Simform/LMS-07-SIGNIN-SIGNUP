@@ -22,7 +22,7 @@ import AddressDetailsForm from "./components/AddressDetailsForm.tsx";
 import PersonalDetailsForm from "./components/PersonalDetailsForm.tsx";
 
 const FormSteps: Array<Array<keyof SignupSchema>> = [
-	["email", "password", "confirmPassword", "termsAndConditions"],
+	["email", "password", "confirmPassword", "phoneNumber", "termsAndConditions"],
 	["firstName", "lastName", "dateOfBirth", "gender"],
 	["city", "landmark", "street", "state", "zip", "country"],
 ];
