@@ -85,7 +85,15 @@ const personalDetailsSchema = z.object({
 		.date({ message: "Date of birth is required" })
 		.refine((date) => date <= new Date(), {
 			message: "Date of birth cannot be in the future",
-		}),
+		})
+		.refine(
+			(date) => {
+				const cutoff = new Date();
+				cutoff.setFullYear(cutoff.getFullYear() - 13);
+				return date <= cutoff;
+			},
+			{ message: "You must be at least 13 years old to create an account" },
+		),
 
 	gender: z.enum(["male", "female", "other", "prefer_not_to_say"], {
 		message: "Please select a valid gender option",

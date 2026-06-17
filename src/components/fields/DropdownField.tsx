@@ -23,9 +23,9 @@ interface DropdownFieldProps {
 	invalid?: boolean | undefined;
 	required?: boolean | undefined;
 	value?: string | undefined;
-	onValueChange?: (value: string) => void;
-	onBlur?: () => void;
-	name?: string;
+	onValueChange?: (value: string) => void | undefined;
+	onBlur?: () => void | undefined;
+	name?: string | undefined;
 }
 
 export function DropdownField({

@@ -16,9 +16,9 @@ interface DateFieldProps {
 	invalid?: boolean | undefined;
 	required?: boolean | undefined;
 	date?: Date | undefined;
-	onDateChange?: (value: Date | undefined) => void;
-	onBlur?: () => void;
-	name?: string;
+	onDateChange?: (value: Date | undefined) => void | undefined;
+	onBlur?: () => void | undefined;
+	name?: string | undefined;
 }
 
 export function DateField({
@@ -77,6 +77,7 @@ export function DateField({
 						selected={date}
 						onSelect={onDateChange}
 						captionLayout="dropdown"
+						disabled={(day) => day > new Date()}
 					/>
 				</PopoverContent>
 			</Popover>

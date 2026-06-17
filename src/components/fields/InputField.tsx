@@ -12,7 +12,7 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 	label: string;
 	description?: string | undefined;
 	invalid?: boolean | undefined;
-	endAddon?: ReactNode;
+	endAddon?: ReactNode | undefined;
 }
 
 export function InputField({
