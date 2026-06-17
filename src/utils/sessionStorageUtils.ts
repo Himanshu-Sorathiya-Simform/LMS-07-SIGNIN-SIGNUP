@@ -1,9 +1,5 @@
 import type { SigninSchema } from "@/schemas/SigninSchema.ts";
-import type {
-	AccountDetailsSchema,
-	AddressDetailsSchema,
-	PersonalDetailsSchema,
-} from "@/schemas/SignupSchema.ts";
+import type { SignupSchema } from "@/schemas/SignupSchema.ts";
 import type { User } from "@/types/user.types.ts";
 
 function getSessionData<T>(
@@ -42,26 +38,27 @@ function getInitialSigninDetails(): SigninSchema {
 	});
 }
 
-function getInitialAccountDetails(): AccountDetailsSchema {
-	return getSessionData<AccountDetailsSchema>("signup_account_details", {
-		email: "",
-		password: "",
-		confirmPassword: "",
-		phoneNumber: "",
-		termsAndConditions: false,
-	});
-}
-
-function getInitialPersonalDetails(): PersonalDetailsSchema {
-	return getSessionData<PersonalDetailsSchema>(
-		"signup_personal_details",
+function getInitialSignupDetails(): SignupSchema {
+	return getSessionData<SignupSchema>(
+		"signup_account_details",
 		{
+			email: "",
+			password: "",
+			confirmPassword: "",
+			phoneNumber: "",
+			termsAndConditions: false,
 			firstName: "",
 			lastName: "",
 			dateOfBirth: new Date(),
 			gender: "male",
+			city: "",
+			landmark: "",
+			street: "",
+			state: "",
+			zip: "",
+			country: "",
 		},
-		function (parsed: PersonalDetailsSchema): PersonalDetailsSchema {
+		function (parsed: SignupSchema): SignupSchema {
 			return {
 				...parsed,
 				dateOfBirth:
@@ -71,22 +68,4 @@ function getInitialPersonalDetails(): PersonalDetailsSchema {
 	);
 }
 
-function getInitialAddressDetails(): AddressDetailsSchema {
-	return getSessionData<AddressDetailsSchema>("signup_address_details", {
-		city: "",
-		landmark: "",
-		street: "",
-		state: "",
-		zip: "",
-		country: "",
-	});
-}
-
-export {
-	getInitialAccountDetails,
-	getInitialAddressDetails,
-	getInitialPersonalDetails,
-	getInitialSigninDetails,
-	getUsers,
-	setUsers,
-};
+export { getInitialSigninDetails, getInitialSignupDetails, getUsers, setUsers };

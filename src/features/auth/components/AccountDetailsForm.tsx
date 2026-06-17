@@ -1,89 +1,33 @@
 import CheckboxField from "@/components/fields/CheckboxField.tsx";
 import { InputField } from "@/components/fields/InputField.tsx";
-import FormActions from "@/components/FormActions";
 import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
+import type { SignupSchema } from "@/schemas/SignupSchema.ts";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 import {
-	type AccountDetailsSchema,
-	accountDetailsSchema,
-} from "@/schemas/SignupSchema.ts";
-import { getInitialAccountDetails, getUsers } from "@/utils/sessionStorageUtils.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, RefreshCcw } from "lucide-react";
-import { useEffect, useState } from "react";
-import { type SubmitHandler, Controller, useForm } from "react-hook-form";
+	type Control,
+	type FormState,
+	type UseFormRegister,
+	Controller,
+} from "react-hook-form";
 
 interface AccountDetailsFormProps {
-	nextStep: () => void;
+	register: UseFormRegister<SignupSchema>;
+	formState: FormState<SignupSchema>;
+	control: Control<SignupSchema>;
 }
 
-function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
+function AccountDetailsForm({
+	register,
+	formState,
+	control,
+}: AccountDetailsFormProps) {
 	const [showPassword, setShowPassword] = useState(false);
-
-	const {
-		control,
-		handleSubmit,
-		register,
-		reset,
-		watch,
-		setError,
-		formState: { errors },
-	} = useForm<AccountDetailsSchema>({
-		resolver: zodResolver(accountDetailsSchema),
-		defaultValues: getInitialAccountDetails(),
-	});
-
-	const formValues = watch();
-
-	useEffect(() => {
-		const accountDetails = {
-			email: formValues.email,
-			password: formValues.password,
-			phoneNumber: formValues.phoneNumber,
-		};
-
-		sessionStorage.setItem(
-			"signup_account_details",
-			JSON.stringify(accountDetails),
-		);
-	}, [formValues]);
-
-	const onSubmit: SubmitHandler<AccountDetailsSchema> = (
-		data: AccountDetailsSchema,
-	) => {
-		const { email } = data;
-
-		const users = getUsers();
-
-		const userExist = users.find((user) => user.email === email);
-		if (userExist) {
-			setError("email", {
-				type: "manual",
-				message: "Email is already in use",
-			});
-
-			return;
-		}
-
-		sessionStorage.setItem("signup_account_details", JSON.stringify(data));
-
-		nextStep();
-	};
-
-	const handleReset = () => {
-		sessionStorage.removeItem("signup_account_details");
-
-		reset({
-			email: "",
-			password: "",
-			confirmPassword: "",
-			phoneNumber: "",
-			termsAndConditions: false,
-		});
-	};
+	const { errors } = formState;
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<>
 			<FieldGroup>
 				<InputField
 					id={"input-field-email"}
@@ -160,20 +104,8 @@ function AccountDetailsForm({ nextStep }: AccountDetailsFormProps) {
 						/>
 					)}
 				/>
-
-				<FormActions className={"justify-end"}>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={handleReset}
-					>
-						<RefreshCcw />
-					</Button>
-
-					<Button type="submit">Next</Button>
-				</FormActions>
 			</FieldGroup>
-		</form>
+		</>
 	);
 }
 

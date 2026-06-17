@@ -1,74 +1,31 @@
 import { DateField } from "@/components/fields/DateField.tsx";
 import { DropdownField } from "@/components/fields/DropdownField.tsx";
 import { InputField } from "@/components/fields/InputField.tsx";
-import FormActions from "@/components/FormActions";
-import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
+import { genderOptions } from "@/constansts/dropdownOptions.ts";
+import type { SignupSchema } from "@/schemas/SignupSchema.ts";
 import {
-	type PersonalDetailsSchema,
-	personalDetailsSchema,
-} from "@/schemas/SignupSchema.ts";
-import { getInitialPersonalDetails } from "@/utils/sessionStorageUtils.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RefreshCcw } from "lucide-react";
-import { useEffect } from "react";
-import { type SubmitHandler, Controller, useForm } from "react-hook-form";
+	type Control,
+	type FormState,
+	type UseFormRegister,
+	Controller,
+} from "react-hook-form";
 
 interface PersonalDetailsFormProps {
-	nextStep: () => void;
-	previousStep: () => void;
+	register: UseFormRegister<SignupSchema>;
+	formState: FormState<SignupSchema>;
+	control: Control<SignupSchema>;
 }
 
-function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProps) {
-	const genderOptions = [
-		{ value: "male", label: "Male" },
-		{ value: "female", label: "Female" },
-		{ value: "other", label: "Other" },
-		{ value: "prefer_not_to_say", label: "Prefer not to say" },
-	];
-
-	const {
-		control,
-		register,
-		reset,
-		handleSubmit,
-		watch,
-		formState: { errors },
-	} = useForm<PersonalDetailsSchema>({
-		resolver: zodResolver(personalDetailsSchema),
-		defaultValues: getInitialPersonalDetails(),
-	});
-
-	const formValues = watch();
-
-	useEffect(() => {
-		sessionStorage.setItem(
-			"signup_personal_details",
-			JSON.stringify(formValues),
-		);
-	}, [formValues]);
-
-	const onSubmit: SubmitHandler<PersonalDetailsSchema> = (
-		data: PersonalDetailsSchema,
-	) => {
-		sessionStorage.setItem("signup_personal_details", JSON.stringify(data));
-
-		nextStep();
-	};
-
-	const handleReset = () => {
-		sessionStorage.removeItem("signup_personal_details");
-
-		reset({
-			firstName: "",
-			lastName: "",
-			dateOfBirth: new Date(),
-			gender: "male",
-		});
-	};
+function PersonalDetailsForm({
+	register,
+	formState,
+	control,
+}: PersonalDetailsFormProps) {
+	const { errors } = formState;
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<>
 			<FieldGroup>
 				<FieldGroup className="grid min-w-sm grid-cols-2">
 					<InputField
@@ -133,29 +90,8 @@ function PersonalDetailsForm({ nextStep, previousStep }: PersonalDetailsFormProp
 						/>
 					)}
 				/>
-
-				<FormActions>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={previousStep}
-					>
-						Back
-					</Button>
-
-					<Button
-						type="button"
-						variant="outline"
-						className="ml-auto"
-						onClick={handleReset}
-					>
-						<RefreshCcw />
-					</Button>
-
-					<Button type="submit">Next</Button>
-				</FormActions>
 			</FieldGroup>
-		</form>
+		</>
 	);
 }
 

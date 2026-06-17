@@ -1,93 +1,18 @@
 import { InputField } from "@/components/fields/InputField.tsx";
-import FormActions from "@/components/FormActions";
-import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
-import {
-	type AccountDetailsSchema,
-	type AddressDetailsSchema,
-	type PersonalDetailsSchema,
-	addressDetailsSchema,
-} from "@/schemas/SignupSchema.ts";
-import { getInitialAddressDetails, setUsers } from "@/utils/sessionStorageUtils.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RefreshCcw } from "lucide-react";
-import { useEffect } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { type SignupSchema } from "@/schemas/SignupSchema.ts";
+import { type FormState, type UseFormRegister } from "react-hook-form";
 
 interface AddressDetailsFormProps {
-	previousStep: () => void;
+	register: UseFormRegister<SignupSchema>;
+	formState: FormState<SignupSchema>;
 }
 
-function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
-	const navigate = useNavigate();
-
-	const {
-		handleSubmit,
-		register,
-		reset,
-		watch,
-		formState: { errors },
-	} = useForm<AddressDetailsSchema>({
-		resolver: zodResolver(addressDetailsSchema),
-		defaultValues: getInitialAddressDetails(),
-	});
-
-	const formValues = watch();
-
-	useEffect(() => {
-		sessionStorage.setItem("signup_address_details", JSON.stringify(formValues));
-	}, [formValues]);
-
-	const onSubmit: SubmitHandler<AddressDetailsSchema> = (
-		data: AddressDetailsSchema,
-	) => {
-		const savedAccount = sessionStorage.getItem("signup_account_details");
-		const savedPersonal = sessionStorage.getItem("signup_personal_details");
-
-		const accountDetails: Omit<AccountDetailsSchema, "confirmPassword"> =
-			savedAccount ? JSON.parse(savedAccount) : {};
-		const personalDetails: PersonalDetailsSchema =
-			savedPersonal ? JSON.parse(savedPersonal) : {};
-
-		const completeSignupData = {
-			...accountDetails,
-			...personalDetails,
-			...data,
-			dateOfBirth:
-				personalDetails.dateOfBirth instanceof Date ?
-					personalDetails.dateOfBirth.toISOString()
-				:	String(personalDetails.dateOfBirth),
-			landmark: data.landmark ?? "",
-			phoneNumber: accountDetails.phoneNumber ?? "",
-		};
-
-		setUsers(completeSignupData);
-
-		sessionStorage.removeItem("signin_details");
-		sessionStorage.removeItem("signup_current_step");
-		sessionStorage.removeItem("signup_account_details");
-		sessionStorage.removeItem("signup_personal_details");
-		sessionStorage.removeItem("signup_address_details");
-
-		navigate("/signin");
-	};
-
-	const handleReset = () => {
-		sessionStorage.removeItem("signup_address_details");
-
-		reset({
-			city: "",
-			landmark: "",
-			street: "",
-			state: "",
-			zip: "",
-			country: "",
-		});
-	};
+function AddressDetailsForm({ register, formState }: AddressDetailsFormProps) {
+	const { errors } = formState;
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<>
 			<FieldGroup>
 				<FieldGroup className="grid grid-cols-2">
 					<InputField
@@ -159,29 +84,8 @@ function AddressDetailsForm({ previousStep }: AddressDetailsFormProps) {
 						{...register("country")}
 					/>
 				</FieldGroup>
-
-				<FormActions>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={previousStep}
-					>
-						Back
-					</Button>
-
-					<Button
-						type="button"
-						variant="outline"
-						className="ml-auto"
-						onClick={handleReset}
-					>
-						<RefreshCcw />
-					</Button>
-
-					<Button type="submit">Submit</Button>
-				</FormActions>
 			</FieldGroup>
-		</form>
+		</>
 	);
 }
 

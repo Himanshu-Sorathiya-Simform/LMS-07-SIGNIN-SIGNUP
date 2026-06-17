@@ -1,6 +1,6 @@
 import z from "zod";
 
-const accountDetailsSchema = z
+const signupSchema = z
 	.object({
 		email: z.email({ message: "Please enter a valid email address" }),
 
@@ -54,107 +54,97 @@ const accountDetailsSchema = z
 		termsAndConditions: z.boolean().refine((val) => val === true, {
 			message: "You must accept company terms and policies",
 		}),
+
+		firstName: z
+			.string()
+			.trim()
+			.min(1, { message: "First name is required" })
+			.min(2, { message: "First name must be at least 2 characters" })
+			.max(50, { message: "First name cannot exceed 50 characters" })
+			.regex(/^[A-Za-z\s-]+$/, {
+				message: "First name can only contain letters, spaces, or hyphens",
+			}),
+
+		lastName: z
+			.string()
+			.trim()
+			.min(1, { message: "Last name is required" })
+			.min(2, { message: "Last name must be at least 2 characters" })
+			.max(50, { message: "Last name cannot exceed 50 characters" })
+			.regex(/^[A-Za-z\s-]+$/, {
+				message: "Last name can only contain letters, spaces, or hyphens",
+			}),
+
+		dateOfBirth: z
+			.date({ message: "Date of birth is required" })
+			.refine((date) => date <= new Date(), {
+				message: "Date of birth cannot be in the future",
+			})
+			.refine(
+				(date) => {
+					const cutoff = new Date();
+					cutoff.setFullYear(cutoff.getFullYear() - 13);
+					return date <= cutoff;
+				},
+				{
+					message:
+						"You must be at least 13 years old to create an account",
+				},
+			),
+
+		gender: z.enum(["male", "female", "other", "prefer_not_to_say"], {
+			message: "Please select a valid gender option",
+		}),
+
+		street: z
+			.string()
+			.trim()
+			.min(1, { message: "Street address is required" })
+			.min(3, { message: "Street address must be at least 3 characters" })
+			.max(100, { message: "Street address cannot exceed 100 characters" }),
+
+		landmark: z
+			.string()
+			.trim()
+			.min(3, { message: "Landmark must be at least 3 characters" })
+			.max(100, { message: "Landmark cannot exceed 100 characters" })
+			.optional()
+			.or(z.literal("")),
+
+		city: z
+			.string()
+			.trim()
+			.min(1, { message: "City is required" })
+			.min(2, { message: "City name must be at least 2 characters" })
+			.max(50, { message: "City name cannot exceed 50 characters" }),
+
+		state: z
+			.string()
+			.trim()
+			.min(1, { message: "State is required" })
+			.min(2, { message: "State name must be at least 2 characters" })
+			.max(50, { message: "State name cannot exceed 50 characters" }),
+
+		zip: z
+			.string()
+			.trim()
+			.min(1, { message: "ZIP/Postal code is required" })
+			.regex(/^[0-9]{5,6}$/, {
+				message: "ZIP/Postal code must be a valid 5 or 6 digit number",
+			}),
+
+		country: z
+			.string()
+			.trim()
+			.min(1, { message: "Country is required" })
+			.min(2, { message: "Country name must be at least 2 characters" })
+			.max(50, { message: "Country name cannot exceed 50 characters" }),
 	})
 	.refine((data) => data.confirmPassword === data.password, {
 		message: "Both password do not match",
 		path: ["confirmPassword"],
 	});
 
-const personalDetailsSchema = z.object({
-	firstName: z
-		.string()
-		.trim()
-		.min(1, { message: "First name is required" })
-		.min(2, { message: "First name must be at least 2 characters" })
-		.max(50, { message: "First name cannot exceed 50 characters" })
-		.regex(/^[A-Za-z\s-]+$/, {
-			message: "First name can only contain letters, spaces, or hyphens",
-		}),
+type SignupSchema = z.infer<typeof signupSchema>;
 
-	lastName: z
-		.string()
-		.trim()
-		.min(1, { message: "Last name is required" })
-		.min(2, { message: "Last name must be at least 2 characters" })
-		.max(50, { message: "Last name cannot exceed 50 characters" })
-		.regex(/^[A-Za-z\s-]+$/, {
-			message: "Last name can only contain letters, spaces, or hyphens",
-		}),
-
-	dateOfBirth: z
-		.date({ message: "Date of birth is required" })
-		.refine((date) => date <= new Date(), {
-			message: "Date of birth cannot be in the future",
-		})
-		.refine(
-			(date) => {
-				const cutoff = new Date();
-				cutoff.setFullYear(cutoff.getFullYear() - 13);
-				return date <= cutoff;
-			},
-			{ message: "You must be at least 13 years old to create an account" },
-		),
-
-	gender: z.enum(["male", "female", "other", "prefer_not_to_say"], {
-		message: "Please select a valid gender option",
-	}),
-});
-
-const addressDetailsSchema = z.object({
-	street: z
-		.string()
-		.trim()
-		.min(1, { message: "Street address is required" })
-		.min(3, { message: "Street address must be at least 3 characters" })
-		.max(100, { message: "Street address cannot exceed 100 characters" }),
-
-	landmark: z
-		.string()
-		.trim()
-		.min(3, { message: "Landmark must be at least 3 characters" })
-		.max(100, { message: "Landmark cannot exceed 100 characters" })
-		.optional()
-		.or(z.literal("")),
-
-	city: z
-		.string()
-		.trim()
-		.min(1, { message: "City is required" })
-		.min(2, { message: "City name must be at least 2 characters" })
-		.max(50, { message: "City name cannot exceed 50 characters" }),
-
-	state: z
-		.string()
-		.trim()
-		.min(1, { message: "State is required" })
-		.min(2, { message: "State name must be at least 2 characters" })
-		.max(50, { message: "State name cannot exceed 50 characters" }),
-
-	zip: z
-		.string()
-		.trim()
-		.min(1, { message: "ZIP/Postal code is required" })
-		.regex(/^[0-9]{5,6}$/, {
-			message: "ZIP/Postal code must be a valid 5 or 6 digit number",
-		}),
-
-	country: z
-		.string()
-		.trim()
-		.min(1, { message: "Country is required" })
-		.min(2, { message: "Country name must be at least 2 characters" })
-		.max(50, { message: "Country name cannot exceed 50 characters" }),
-});
-
-type AccountDetailsSchema = z.infer<typeof accountDetailsSchema>;
-type PersonalDetailsSchema = z.infer<typeof personalDetailsSchema>;
-type AddressDetailsSchema = z.infer<typeof addressDetailsSchema>;
-
-export {
-	type AccountDetailsSchema,
-	type AddressDetailsSchema,
-	type PersonalDetailsSchema,
-	accountDetailsSchema,
-	addressDetailsSchema,
-	personalDetailsSchema,
-};
+export { type SignupSchema, signupSchema };
