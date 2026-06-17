@@ -131,7 +131,21 @@ function SignupForm() {
 	function handleReset(e: React.MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
 
-		FormSteps[currentStep]?.forEach((field) => resetField(field));
+		FormSteps[currentStep]?.forEach((field) => {
+			let defaultValue: SignupSchema[typeof field];
+
+			if (field === "dateOfBirth") {
+				defaultValue = new Date() as SignupSchema[typeof field];
+			} else if (field === "gender") {
+				defaultValue = "male" as SignupSchema[typeof field];
+			} else if (field === "termsAndConditions") {
+				defaultValue = false as SignupSchema[typeof field];
+			} else {
+				defaultValue = "" as SignupSchema[typeof field];
+			}
+
+			resetField(field, { defaultValue });
+		});
 	}
 
 	return (
