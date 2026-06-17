@@ -51,13 +51,21 @@ function SignupForm() {
 	const formValues = watch();
 
 	useEffect(() => {
-		const user = {};
-
-		Object.keys(formValues).forEach((key) => {
-			if (key !== "confirmPassword" && key !== "termsAndConditions") {
-				user[key] = formValues[key];
-			}
-		});
+		const user: User = {
+			email: formValues.email,
+			password: formValues.password,
+			firstName: formValues.firstName,
+			lastName: formValues.lastName,
+			dateOfBirth: formValues.dateOfBirth,
+			gender: formValues.gender,
+			city: formValues.city,
+			landmark: formValues.landmark ?? "",
+			phoneNumber: formValues.phoneNumber ?? "",
+			street: formValues.street,
+			state: formValues.state,
+			zip: formValues.zip,
+			country: formValues.country,
+		};
 
 		sessionStorage.setItem("signup_details", JSON.stringify(user));
 	}, [formValues]);
