@@ -13,71 +13,69 @@ function AddressDetailsForm({ register, formState }: AddressDetailsFormProps) {
 
 	return (
 		<>
-			<FieldGroup>
-				<FieldGroup className="grid grid-cols-2">
-					<InputField
-						id={"input-field-street"}
-						label={"Street"}
-						placeholder={"Enter your street"}
-						required
-						description={errors.street?.message}
-						invalid={!!errors.street}
-						{...register("street")}
-					/>
+			<FieldGroup className="grid grid-cols-2">
+				<InputField
+					id={"input-field-street"}
+					label={"Street"}
+					placeholder={"Enter your street"}
+					required
+					description={errors.street?.message}
+					invalid={!!errors.street}
+					{...register("street")}
+				/>
 
-					<InputField
-						id={"input-field-landmark"}
-						label={"Landmark"}
-						placeholder={"Enter your landmark"}
-						description={errors.landmark?.message}
-						invalid={!!errors.landmark}
-						{...register("landmark")}
-					/>
-				</FieldGroup>
+				<InputField
+					id={"input-field-landmark"}
+					label={"Landmark"}
+					placeholder={"Enter your landmark"}
+					description={errors.landmark?.message}
+					invalid={!!errors.landmark}
+					{...register("landmark")}
+				/>
+			</FieldGroup>
 
-				<FieldGroup className="grid grid-cols-2">
-					<InputField
-						id={"input-field-city"}
-						label={"City"}
-						placeholder={"Enter your city"}
-						required
-						description={errors.city?.message}
-						invalid={!!errors.city}
-						{...register("city")}
-					/>
+			<FieldGroup className="grid grid-cols-2">
+				<InputField
+					id={"input-field-city"}
+					label={"City"}
+					placeholder={"Enter your city"}
+					required
+					description={errors.city?.message}
+					invalid={!!errors.city}
+					{...register("city")}
+				/>
 
-					<InputField
-						id={"input-field-state"}
-						label={"State"}
-						placeholder={"Enter your state"}
-						required
-						description={errors.state?.message}
-						invalid={!!errors.state}
-						{...register("state")}
-					/>
-				</FieldGroup>
+				<InputField
+					id={"input-field-state"}
+					label={"State"}
+					placeholder={"Enter your state"}
+					required
+					description={errors.state?.message}
+					invalid={!!errors.state}
+					{...register("state")}
+				/>
+			</FieldGroup>
 
-				<FieldGroup className="grid grid-cols-2">
-					<InputField
-						id={"input-field-zip"}
-						label={"Zip"}
-						placeholder={"Enter your zip"}
-						required
-						description={errors.zip?.message}
-						invalid={!!errors.zip}
-						{...register("zip")}
-					/>
+			<FieldGroup className="grid grid-cols-2">
+				<InputField
+					id={"input-field-zip"}
+					label={"Zip"}
+					placeholder={"Enter your zip"}
+					required
+					description={errors.zip?.message}
+					invalid={!!errors.zip}
+					{...register("zip")}
+				/>
 
-					<InputField
-						id={"input-field-country"}
-						label={"Country"}
-						placeholder={"Enter your country"}
-						required
-						description={errors.country?.message}
-						invalid={!!errors.country}
-						{...register("country")}
-					/>
-				</FieldGroup>
+				<InputField
+					id={"input-field-country"}
+					label={"Country"}
+					placeholder={"Enter your country"}
+					required
+					description={errors.country?.message}
+					invalid={!!errors.country}
+					{...register("country")}
+				/>
 			</FieldGroup>
 		</>
 	);

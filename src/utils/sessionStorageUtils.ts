@@ -75,10 +75,15 @@ function getInitialSignupDetails(): SignupSchema {
 	);
 }
 
+function removeSessionStorageDetails() {
+	sessionStorage.clear();
+}
+
 export {
 	getInitialSigninDetails,
 	getInitialSignupDetails,
 	getSignupStep,
 	getUsers,
+	removeSessionStorageDetails,
 	setUsers,
 };

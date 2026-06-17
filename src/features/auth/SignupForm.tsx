@@ -1,10 +1,12 @@
 import FormActions from "@/components/FormActions.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { FieldGroup } from "@/components/ui/field.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { type SignupSchema, signupSchema } from "@/schemas/SignupSchema.ts";
 import {
 	getInitialSignupDetails,
 	getSignupStep,
+	removeSessionStorageDetails,
 } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RefreshCcw } from "lucide-react";
@@ -27,13 +29,20 @@ function SignupForm() {
 
 	const [currentStep, setCurrentStep] = useState(getSignupStep);
 
-	const { control, register, formState, trigger, resetField, watch } =
-		useForm<SignupSchema>({
-			resolver: zodResolver(signupSchema),
-			mode: "onSubmit",
-			reValidateMode: "onChange",
-			defaultValues: getInitialSignupDetails(),
-		});
+	const {
+		control,
+		register,
+		formState,
+		trigger,
+		resetField,
+		watch,
+		handleSubmit,
+	} = useForm<SignupSchema>({
+		resolver: zodResolver(signupSchema),
+		mode: "onSubmit",
+		reValidateMode: "onChange",
+		defaultValues: getInitialSignupDetails(),
+	});
 
 	const formValues = watch();
 
@@ -58,10 +67,6 @@ function SignupForm() {
 
 		const valid = await trigger(FormSteps[currentStep]);
 
-		if (valid && currentStep === FormSteps.length - 1) {
-			navigate("/signin");
-		}
-
 		if (valid && currentStep < FormSteps.length - 1) {
 			setCurrentStep((prev) => prev + 1);
 		}
@@ -71,6 +76,14 @@ function SignupForm() {
 		e.preventDefault();
 
 		if (currentStep > 0) setCurrentStep((prev) => prev - 1);
+	}
+
+	function onSubmit() {
+		console.log("trigger");
+
+		navigate("/signin");
+
+		removeSessionStorageDetails();
 	}
 
 	function handleReset(e: React.MouseEvent<HTMLButtonElement>) {
@@ -95,62 +108,60 @@ function SignupForm() {
 
 				<Separator />
 
-				{currentStep === 0 && (
-					<AccountDetailsForm
-						register={register}
-						formState={formState}
-						control={control}
-					/>
-				)}
-				{currentStep === 1 && (
-					<PersonalDetailsForm
-						register={register}
-						formState={formState}
-						control={control}
-					/>
-				)}
-				{currentStep === 2 && (
-					<AddressDetailsForm
-						register={register}
-						formState={formState}
-					/>
-				)}
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<FieldGroup>
+						{currentStep === 0 && (
+							<AccountDetailsForm
+								register={register}
+								formState={formState}
+								control={control}
+							/>
+						)}
+						{currentStep === 1 && (
+							<PersonalDetailsForm
+								register={register}
+								formState={formState}
+								control={control}
+							/>
+						)}
+						{currentStep === 2 && (
+							<AddressDetailsForm
+								register={register}
+								formState={formState}
+							/>
+						)}
 
-				<FormActions>
-					{currentStep > 0 && (
-						<Button
-							type="button"
-							variant="outline"
-							onClick={previousStep}
-						>
-							Back
-						</Button>
-					)}
+						<FormActions>
+							{currentStep > 0 && (
+								<Button
+									type="button"
+									variant="outline"
+									onClick={previousStep}
+								>
+									Back
+								</Button>
+							)}
 
-					<Button
-						type="button"
-						variant="outline"
-						className="ml-auto"
-						onClick={handleReset}
-					>
-						<RefreshCcw />
-					</Button>
+							<Button
+								type="button"
+								variant="outline"
+								className="ml-auto"
+								onClick={handleReset}
+							>
+								<RefreshCcw />
+							</Button>
 
-					{currentStep !== FormSteps.length - 1 ?
-						<Button
-							type="button"
-							onClick={nextStep}
-						>
-							Next
-						</Button>
-					:	<Button
-							type="submit"
-							onClick={nextStep}
-						>
-							Submit
-						</Button>
-					}
-				</FormActions>
+							{currentStep !== FormSteps.length - 1 ?
+								<Button
+									type="button"
+									onClick={nextStep}
+								>
+									Next
+								</Button>
+							:	<Button type="submit">Submit</Button>}
+						</FormActions>
+					</FieldGroup>
+				</form>
 			</div>
 
 			<p className="text-muted-foreground mt-4 text-center text-sm">
