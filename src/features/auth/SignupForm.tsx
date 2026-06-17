@@ -5,7 +5,7 @@ import { type SignupSchema, signupSchema } from "@/schemas/SignupSchema.ts";
 import { getInitialSignupDetails } from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RefreshCcw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import Stepper from "../../components/Stepper.tsx";
@@ -22,15 +22,13 @@ const FormSteps: Array<Array<keyof SignupSchema>> = [
 function SignupForm() {
 	const navigate = useNavigate();
 
-	const [currentStep, setCurrentStep] = useState(() => {
-		const savedStep = sessionStorage.getItem("signup_step");
+	const [currentStep, setCurrentStep] = useState(0);
 
-		return savedStep ? Number(savedStep) : 0;
-	});
-
-	useEffect(() => {
-		sessionStorage.setItem("signup_step", currentStep.toString());
-	}, [currentStep]);
+	const { control, register, formState, trigger, resetField } =
+		useForm<SignupSchema>({
+			resolver: zodResolver(signupSchema),
+			defaultValues: getInitialSignupDetails(),
+		});
 
 	async function nextStep(e: React.MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
@@ -38,7 +36,7 @@ function SignupForm() {
 		const valid = await trigger(FormSteps[currentStep]);
 
 		if (valid && currentStep === FormSteps.length - 1) {
-			navigate("/profile");
+			navigate("/signin");
 		}
 
 		if (valid && currentStep < FormSteps.length - 1) {
@@ -52,24 +50,25 @@ function SignupForm() {
 		if (currentStep > 0) setCurrentStep((prev) => prev - 1);
 	}
 
-	const { control, register, formState, trigger } = useForm<SignupSchema>({
-		resolver: zodResolver(signupSchema),
-		defaultValues: getInitialSignupDetails(),
-	});
+	function handleReset(e: React.MouseEvent<HTMLButtonElement>) {
+		e.preventDefault();
+
+		FormSteps[currentStep]?.forEach((field) => resetField(field));
+	}
 
 	return (
 		<>
 			<div className="flex flex-col gap-4 rounded-md p-5 outline-1 outline-gray-300">
+				<h2 className="text-2xl font-bold">
+					{currentStep === 0 && "Account Details"}
+					{currentStep === 1 && "Personal Details"}
+					{currentStep === 2 && "Address Details"}
+				</h2>
+
 				<Stepper
 					currentStep={currentStep}
 					maxStep={3}
 				/>
-
-				<h2 className="text-2xl font-bold">
-					{currentStep === 0 && "Account Detail"}
-					{currentStep === 1 && "Personal Detail"}
-					{currentStep === 2 && "Address Detail"}
-				</h2>
 
 				<Separator />
 
@@ -109,11 +108,12 @@ function SignupForm() {
 						type="button"
 						variant="outline"
 						className="ml-auto"
+						onClick={handleReset}
 					>
 						<RefreshCcw />
 					</Button>
 
-					{currentStep === FormSteps.length - 1 ?
+					{currentStep !== FormSteps.length - 1 ?
 						<Button
 							type="button"
 							onClick={nextStep}
