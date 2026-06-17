@@ -2,10 +2,13 @@ import FormActions from "@/components/FormActions.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { type SignupSchema, signupSchema } from "@/schemas/SignupSchema.ts";
-import { getInitialSignupDetails } from "@/utils/sessionStorageUtils.ts";
+import {
+	getInitialSignupDetails,
+	getSignupStep,
+} from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RefreshCcw } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import Stepper from "../../components/Stepper.tsx";
@@ -22,13 +25,33 @@ const FormSteps: Array<Array<keyof SignupSchema>> = [
 function SignupForm() {
 	const navigate = useNavigate();
 
-	const [currentStep, setCurrentStep] = useState(0);
+	const [currentStep, setCurrentStep] = useState(getSignupStep);
 
-	const { control, register, formState, trigger, resetField } =
+	const { control, register, formState, trigger, resetField, watch } =
 		useForm<SignupSchema>({
 			resolver: zodResolver(signupSchema),
+			mode: "onSubmit",
+			reValidateMode: "onChange",
 			defaultValues: getInitialSignupDetails(),
 		});
+
+	const formValues = watch();
+
+	useEffect(() => {
+		const user = {};
+
+		Object.keys(formValues).forEach((key) => {
+			if (key !== "confirmPassword" && key !== "termsAndConditions") {
+				user[key] = formValues[key];
+			}
+		});
+
+		sessionStorage.setItem("signup_details", JSON.stringify(user));
+	}, [formValues]);
+
+	useEffect(() => {
+		sessionStorage.setItem("signup_step", JSON.stringify(currentStep));
+	}, [currentStep]);
 
 	async function nextStep(e: React.MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
@@ -93,7 +116,7 @@ function SignupForm() {
 					/>
 				)}
 
-				<FormActions className={"justify-end"}>
+				<FormActions>
 					{currentStep > 0 && (
 						<Button
 							type="button"

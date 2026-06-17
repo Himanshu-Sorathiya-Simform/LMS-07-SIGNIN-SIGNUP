@@ -31,6 +31,13 @@ function setUsers(user: User) {
 	localStorage.setItem("auth-users", JSON.stringify(users));
 }
 
+function getSignupStep() {
+	const count = sessionStorage.getItem("signup_step");
+
+	if (!count) return 0;
+	return Number(count);
+}
+
 function getInitialSigninDetails(): SigninSchema {
 	return getSessionData<SigninSchema>("signin_details", {
 		email: "",
@@ -40,7 +47,7 @@ function getInitialSigninDetails(): SigninSchema {
 
 function getInitialSignupDetails(): SignupSchema {
 	return getSessionData<SignupSchema>(
-		"signup_account_details",
+		"signup_details",
 		{
 			email: "",
 			password: "",
@@ -68,4 +75,10 @@ function getInitialSignupDetails(): SignupSchema {
 	);
 }
 
-export { getInitialSigninDetails, getInitialSignupDetails, getUsers, setUsers };
+export {
+	getInitialSigninDetails,
+	getInitialSignupDetails,
+	getSignupStep,
+	getUsers,
+	setUsers,
+};

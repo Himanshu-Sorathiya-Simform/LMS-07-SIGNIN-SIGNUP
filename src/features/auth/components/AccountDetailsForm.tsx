@@ -32,7 +32,6 @@ function AccountDetailsForm({
 				<InputField
 					id={"input-field-email"}
 					label={"Email"}
-					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your email"}
 					required
 					description={errors.email?.message}
@@ -44,7 +43,6 @@ function AccountDetailsForm({
 					id={"input-field-password"}
 					label={"Password"}
 					type={showPassword ? "text" : "password"}
-					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your password"}
 					endAddon={
 						<Button
@@ -66,7 +64,6 @@ function AccountDetailsForm({
 				<InputField
 					id={"input-field-confirm-password"}
 					label={"Confirm Password"}
-					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Confirm your password"}
 					required
 					description={errors.confirmPassword?.message}
@@ -77,7 +74,6 @@ function AccountDetailsForm({
 				<InputField
 					id={"input-field-phone-number"}
 					label={"Phone Number"}
-					className={"focus-visible:ring-1 aria-invalid:ring-1"}
 					placeholder={"Enter your phone number"}
 					description={errors.phoneNumber?.message}
 					invalid={!!errors.phoneNumber}
@@ -91,7 +87,6 @@ function AccountDetailsForm({
 						<CheckboxField
 							id="input-field-terms"
 							label="Accept terms and conditions"
-							className={"focus-visible:ring-1 aria-invalid:ring-1"}
 							description={
 								errors.termsAndConditions?.message
 								?? "By clicking this checkbox, you agree to the terms."
