@@ -1,7 +1,7 @@
 interface User {
 	city: string;
 	country: string;
-	dateOfBirth: string;
+	dateOfBirth: Date;
 	email: string;
 	firstName: string;
 	gender: string;

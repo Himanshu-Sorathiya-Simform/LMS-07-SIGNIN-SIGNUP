@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button.tsx";
 import { FieldGroup } from "@/components/ui/field.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { type SigninSchema, signinSchema } from "@/schemas/SigninSchema.ts";
-import { getInitialSigninDetails, getUsers } from "@/utils/sessionStorageUtils.ts";
+import {
+	getInitialSigninDetails,
+	getUsers,
+	removeSessionStorageDetails,
+} from "@/utils/sessionStorageUtils.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RefreshCcw } from "lucide-react";
 import { useEffect } from "react";
@@ -62,13 +66,9 @@ function SigninForm({ onLoginSuccess }: SigninFormProps) {
 
 		onLoginSuccess(userExist.email);
 
-		sessionStorage.removeItem("signin_details");
-		sessionStorage.removeItem("signup_current_step");
-		sessionStorage.removeItem("signup_account_details");
-		sessionStorage.removeItem("signup_personal_details");
-		sessionStorage.removeItem("signup_address_details");
-
 		navigate("/profile");
+
+		removeSessionStorageDetails();
 	};
 
 	const handleReset = () => {
