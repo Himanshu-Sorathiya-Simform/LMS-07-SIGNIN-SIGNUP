@@ -11,7 +11,13 @@ interface ProfileDetailsProps {
 function ProfileDetails({ userEmail }: ProfileDetailsProps) {
 	const user = getUsers().find((user) => user.email === userEmail);
 
-	if (!user) return <Navigate to="/signin" />;
+	if (!user)
+		return (
+			<Navigate
+				to="/signin"
+				replace
+			/>
+		);
 
 	return (
 		<div className="flex flex-col gap-2">

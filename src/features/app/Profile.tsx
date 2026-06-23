@@ -8,7 +8,13 @@ interface ProfileProps {
 }
 
 function Profile({ userEmail, onLogout }: ProfileProps) {
-	if (!userEmail) return <Navigate to="/signin" />;
+	if (!userEmail)
+		return (
+			<Navigate
+				to="/signin"
+				replace
+			/>
+		);
 
 	return (
 		<div className="flex w-full max-w-xl min-w-md flex-col gap-4 rounded-lg p-4 outline-1 outline-gray-300">
