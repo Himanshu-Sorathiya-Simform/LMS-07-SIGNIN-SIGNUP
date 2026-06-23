@@ -10,14 +10,15 @@ function Stepper({ currentStep, maxStep }: StepperProps) {
 				const isActive = currentStep === index;
 				const isCompleted = currentStep > index;
 
+				const className =
+					isActive ? "bg-gray-400"
+					: isCompleted ? "bg-primary"
+					: "bg-gray-200";
+
 				return (
 					<div
-						key={index}
-						className={`h-2 w-full rounded-full transition-colors duration-200 ${
-							isActive ? "bg-gray-400"
-							: isCompleted ? "bg-primary"
-							: "bg-gray-200"
-						}`}
+						key={`step-${index}`}
+						className={`h-2 w-full rounded-full transition-colors duration-200 ${className}`}
 					/>
 				);
 			})}
