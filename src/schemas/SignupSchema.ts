@@ -45,7 +45,7 @@ const signupSchema = z
 		phoneNumber: z
 			.string()
 			.trim()
-			.regex(/^[0-9]{10}$/, {
+			.regex(/^[6-9]{1}\d{9}$/, {
 				message: "Phone number must be exactly 10 digits",
 			})
 			.optional()
